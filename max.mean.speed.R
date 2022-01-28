@@ -15,7 +15,7 @@ max.mean.speed <- function(x, n = 600) {
 
 max.median.speed <- function(x, n = "roeker") {
   
-  if(n = "roeker") {
+  if(n == "roeker") {
     n = c(0.3, 0.5, 1, 2, 3, 4, 
           5, 6.5, 10, 13.5, 18, 
           30, 60, 120, 300, 600, 
