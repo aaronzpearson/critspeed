@@ -1,4 +1,11 @@
-max.median.speed. <- function(x, n = "roeker", sample.rate = 10) {
+max.median.speed. <- function(x, n = c("roeker"), sample.rate = 10) {
+
+  if(length(n) == 1 & n != "roeker") {
+
+    message("Error: n must be greater than 1L")
+    stop()
+
+  }
 
   if(n == "roeker") {
 
@@ -10,7 +17,7 @@ max.median.speed. <- function(x, n = "roeker", sample.rate = 10) {
 
   } else {
 
-    n. = n
+    n. = n * sample.rate
 
   }
 
@@ -18,7 +25,6 @@ max.median.speed. <- function(x, n = "roeker", sample.rate = 10) {
   tryCatch(
 
     expr = {
-
       do.call(
         rbind,
         lapply(
@@ -26,12 +32,11 @@ max.median.speed. <- function(x, n = "roeker", sample.rate = 10) {
           max, na.rm = TRUE
         )
       )
-
     },
 
     error = function(error_condition){
 
-      message("This function is written for 10 Hz data; n was rounded to handle errors.")
+      message("Warning: This function is written for 10 Hz data; n was rounded to handle errors.")
 
     },
 
