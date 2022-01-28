@@ -118,7 +118,5 @@ crit.speed.results <- function(player.speed,
                            )
   )
 
-  # cs.results$rss <- cs.results$rse^2 * (dur - )
-
   cs.results
 }
