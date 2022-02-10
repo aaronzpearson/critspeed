@@ -1,3 +1,22 @@
+To do:
+
+* plotting functions    
+* versatility of cs.results.observed.list(): 1. global vs session data, 2. feed into crit.speed.results(), 3. feed into plotting functions, 4. return as data.frame with residuals and raw max mean vel data        
+* consistent function naming conventions (same concept as fvp package)    
+* butterworth filter for roeker (in place of Kalman filter - Kalman filter in R is nearly impossible)    
+* look into stats::KalmanSmooth (small chance it will work)    
+
+Current dependencies:
+
+* data.table    
+* Rfast    
+* minpack.lm    
+* signal (not yet implemented - for butterworth filter)    
+
+These package have (almost) no dependencies of their own    
+
+= = =
+
 # critspeed
 An R package to accompany Eli Mizelman's PhD dissertation
 
