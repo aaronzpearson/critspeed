@@ -1,4 +1,4 @@
-cs.results.model.list <- function(data = list(),
+cs.results.observed.list <- function(data = list(),
                                   data2 = list(),
                                   player.speed,
                                   sample.rate = 10,
