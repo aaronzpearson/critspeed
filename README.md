@@ -1,7 +1,7 @@
 To do:
 
 * plotting functions    
-* versatility of cs.results.observed.list(): 1. global vs session data, 2. feed into crit.speed.results(), 3. feed into plotting functions, 4. return as data.frame with residuals and raw max mean vel data        
+* versatility of cs.results.observed.list(): *1. global vs session data (complete)*, 2. feed into crit.speed.results(), 3. feed into plotting functions, 4. return as data.frame with residuals and raw max mean vel data        
 * consistent function naming conventions (same concept as fvp package)    
 * butterworth filter for roeker (in place of Kalman filter - Kalman filter in R is nearly impossible)    
 * look into stats::KalmanSmooth (small chance it will work)    
