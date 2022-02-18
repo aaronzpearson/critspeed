@@ -44,7 +44,7 @@ cs.results.observed <- function(player.speed,
   exponential.decay.model <- cs.exponential.decay(data = dat)
 
   dat.fit <- dat
-  dat.fit$dur.log = log(dur)
+  dat.fit$dur.log = log(dat.fit$duration)
 
   dat.fit$omni.pred <- predict(extended.model)
   dat.fit$omni.resid <- as.numeric(residuals(extended.model))
