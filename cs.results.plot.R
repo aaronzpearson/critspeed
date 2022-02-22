@@ -27,7 +27,7 @@ cs.results.plot <- function(player.speed,
 
 
   # observations w/ model fit
-  p.obs <- function(log.dur = log.dur) { # set all info here, might need title argument for different plots
+  p.obs <- function(log.dur = log.dur) { 
 
     if(log.dur == FALSE) { plot(max.mean.speed ~ duration, cs.fit,
                                 ylim = c(0, 12.5),
@@ -44,7 +44,7 @@ cs.results.plot <- function(player.speed,
 
   }
 
-  p.five.param <- function(log.dur = log.dur) { # remove redundant axis labels and tic values (keep tics though)
+  p.five.param <- function(log.dur = log.dur) { 
 
     p.obs(log.dur = log.dur)
 
