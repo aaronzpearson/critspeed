@@ -84,11 +84,11 @@ cs.results.observed.list <- function(data = list(),
     
   }
   
-  set.one.max.mean <- data.table(set.one.max.mean)
+  set.one.max.mean <- data.table::data.table(set.one.max.mean)
   set.one.max.mean.global <- set.one.max.mean[, max(max.mean.speed, na.rm = TRUE), by = duration]
   colnames(set.one.max.mean.global) <- c("duration", "max.mean.speed")
   
-  set.two.max.mean <- data.table(set.two.max.mean)
+  set.two.max.mean <- data.table::data.table(set.two.max.mean)
   set.two.max.mean.global <- set.two.max.mean[, max(max.mean.speed, na.rm = TRUE), by = duration]
   colnames(set.two.max.mean.global) <- c("duration", "max.mean.speed")
   
