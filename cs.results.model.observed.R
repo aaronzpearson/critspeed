@@ -7,7 +7,7 @@ cs.results.observed <- function(player.speed,
                                 crit.speed.estim = 3.5,
                                 max.speed.estim = 12) {
   
-  if(global.data == FALSE) { # make 2 if statements for consistency in the package
+  if(global.data == FALSE) { 
     
     dat = max.mean.speed.df(player.speed = player.speed,
                             sample.rate = sample.rate,
