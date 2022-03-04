@@ -7,7 +7,7 @@ cs.results.observed <- function(player.speed,
                                 crit.speed.estim = 3.5,
                                 max.speed.estim = 12) {
   
-  if(global.data == FALSE) { 
+  if(global.data == FALSE) { # make 2 if statements for consistency in the package
     
     dat = max.mean.speed.df(player.speed = player.speed,
                             sample.rate = sample.rate,
@@ -57,12 +57,17 @@ cs.results.observed <- function(player.speed,
   
   dat.fit$three.p.pred <- predict(three.param)
   dat.fit$three.p.resid <- as.numeric(residuals(three.param))
-  
-  dat.fit$two.p.pred <- predict(two.param, newdata = dat)
-  dat.fit$two.p.resid <- dat$max.mean.speed - predict(two.param, newdata = dat)
-  
+
   dat.fit$exp.pred <- predict(exponential.model)
   dat.fit$exp.resid <- as.numeric(residuals(exponential.model))
+
+  dat.cv2$two.p.pred <- predict(two.param)
+  dat.cv2$two.p.resid <- dat.cv2$max.mean.speed - predict(two.param)
+  
+  dat.fit <- merge(dat.fit, 
+                   dat.cv2, 
+                   by = c("duration", "max.mean.speed"), 
+                   all = TRUE)
   
   return(dat.fit)
   
