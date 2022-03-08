@@ -22,7 +22,7 @@ cs.results.plot <- function(player.speed,
                                  global.data = global.data,
                                  sample.rate = sample.rate,
                                  dur = dur,
-                                 cv.2 = cv.2
+                                 cv.2 = cv.2,
                                  d.prime.estim = d.prime.estim,
                                  crit.speed.estim = crit.speed.estim,
                                  max.speed.estim = max.speed.estim)
