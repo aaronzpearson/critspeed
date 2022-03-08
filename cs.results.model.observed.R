@@ -69,6 +69,8 @@ cs.results.observed <- function(player.speed,
                    by = c("duration", "max.mean.speed"), 
                    all = TRUE)
   
+  dat.fit <- dat.fit[order(dat.fit$duration), , drop = FALSE]
+  
   return(dat.fit)
   
 }
