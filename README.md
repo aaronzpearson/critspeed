@@ -5,6 +5,9 @@ To do:
 * consistent function naming conventions (same concept as fvp package)    
 * butterworth filter for roeker (in place of Kalman filter - Kalman filter in R is nearly impossible)    
 * look into stats::KalmanSmooth (small chance it will work)    
+* function documentation *Eli*    
+* explicit package dependency calls *nearly complete*    
+* double-check all package dependencies are documented as imports    
 
 Current dependencies:
 
@@ -26,9 +29,9 @@ This package provides practitioners with the ability to model an athlete's criti
 * 3 parameter model    
 * 5 parameter model    
 * OmVD    
-* Exponential model    
+* Exponential model *needs fixing*    
 
-And those suggested by Roeker et al., 2017:    
+And those suggested by Roeker et al., 2017: *none of these are complete*    
 * Richard's logistic 5 parameter    
 * Generalized logistic 4 parameter    
 * Logistic 3 parameter    
@@ -39,7 +42,9 @@ And those suggested by Roeker et al., 2017:
 
 
 The values returned to the user include:    
-* Critical selocity/ aerobic velocity estimates    
+* Critical speed/ aerobic velocity estimates    
 * Aerobic capacity (D') estimates    
 * Model fits    
 * Predicted values    
+    
+* D' balance can be modelled using the *stamina* package (currently beta version)
