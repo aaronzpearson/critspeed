@@ -45,15 +45,17 @@ cs.results.plot <- function(player.speed,
       
       plot(max.mean.speed ~ dur.log, cs.fit,
                                ylim = c(0, 12.5),
-                               xlim = c(0, log(dur)),
+                               xlim = c(0, log10(dur)),
                                col = "grey",
                                ylab = "Max Mean Velocity (m/s)",
                                xlab = "Log(dur) (s)",
-                               xaxt = "n") }
-    
-    axis(1, 
+                               xaxt = "n") 
+        
+      axis(1, 
          at = dur.log,
          labels = dur)
+    
+    }
 
   }
 
@@ -65,7 +67,7 @@ cs.results.plot <- function(player.speed,
       text(x = dur - 50, y = cs.coef$critical.speed[5] +  1,
            label = paste("AV =", as.character(round(cs.coef$critical.speed[5], 2))))}
     if(log.dur == TRUE) {lines(cs.fit$five.p.pred ~ cs.fit$dur.log, col = "red")
-      text(x = log(dur - 150), y = cs.coef$critical.speed[5] +  1,
+      text(x = log10(dur - 150), y = cs.coef$critical.speed[5] +  1,
            label = paste("AV =", as.character(round(cs.coef$critical.speed[5], 2))))}
 
     title(main = "5P")
@@ -82,7 +84,7 @@ cs.results.plot <- function(player.speed,
       text(x = dur - 50, y = cs.coef$critical.speed[4] +  1,
            label = paste("AV =", as.character(round(cs.coef$critical.speed[4], 2))))}
     if(log.dur == TRUE) {lines(cs.fit$three.p.pred ~ cs.fit$dur.log, col = "green")
-      text(x = log(dur - 150), y = cs.coef$critical.speed[4] +  1,
+      text(x = log10(dur - 150), y = cs.coef$critical.speed[4] +  1,
            label = paste("AV =", as.character(round(cs.coef$critical.speed[4], 2))))}
 
     title(main = "CV3")
@@ -99,7 +101,7 @@ cs.results.plot <- function(player.speed,
       text(x = dur - 50, y = cs.coef$critical.speed[3] +  1,
          label = paste("AV =", as.character(round(cs.coef$critical.speed[3], 2))))}
     if(log.dur == TRUE) {lines(cs.fit$two.p.pred ~ cs.fit$dur.log, col = "blue")
-      text(x = log(dur - 150), y = cs.coef$critical.speed[3] +  1,
+      text(x = log10(dur - 150), y = cs.coef$critical.speed[3] +  1,
            label = paste("AV =", as.character(round(cs.coef$critical.speed[3], 2))))}
 
     title(main = "CV2")
@@ -116,7 +118,7 @@ cs.results.plot <- function(player.speed,
       text(x = dur - 50, y = cs.coef$critical.speed[4] +  1,
            label = paste("AV =", as.character(round(cs.coef$critical.speed[6], 2))))}
     if(log.dur == TRUE) {lines(cs.fit$omni.pred ~ cs.fit$dur.log, col = "black")
-      text(x = log(dur - 150), y = cs.coef$critical.speed[4] +  1,
+      text(x = log10(dur - 150), y = cs.coef$critical.speed[4] +  1,
            label = paste("AV =", as.character(round(cs.coef$critical.speed[6], 2))))}
 
     title(main = "OmVd")
