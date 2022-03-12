@@ -38,12 +38,22 @@ cs.results.plot <- function(player.speed,
                                 col = "grey",
                                 ylab = "Max Mean Velocity (m/sec)",
                                 xlab = "Duration (s)") }
-    if(log.dur == TRUE) { plot(max.mean.speed ~ dur.log, cs.fit,
+    if(log.dur == TRUE) { 
+      
+      dur <- c(1, 10, 60, 120, 600)
+      dur.log <- log10(dur)
+      
+      plot(max.mean.speed ~ dur.log, cs.fit,
                                ylim = c(0, 12.5),
                                xlim = c(0, log(dur)),
                                col = "grey",
                                ylab = "Max Mean Velocity (m/s)",
-                               xlab = "Log(dur) (s)") }
+                               xlab = "Log(dur) (s)",
+                               xaxt = "n") }
+    
+    axis(1, 
+         at = dur.log,
+         labels = dur)
 
   }
 
