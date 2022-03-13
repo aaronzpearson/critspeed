@@ -13,12 +13,12 @@ df <- read_csv("...")
 
 max.mean.speed.df(df$max_speed)    
 max.median.speed.df(df$duration)    
-cs.results.model(df$max_speed)
+cs.results.model(df$max_speed)    
 cs.results.fitted(df$max_speed,    
-                  TRUE,
-                  cv.2 = 120)
+                  TRUE,    
+                  cv.2 = 120)    
 cs.results.plot(df$max_speed,    
-                TRUE,
+                TRUE,    
                 log.dur = FALSE)
 
 = = =
