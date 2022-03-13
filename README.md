@@ -6,7 +6,7 @@ Current workflow:
 
 devtools::install_github("critspeed")
 
-library(readr)
+library(readr)    
 library(critspeed)
 
 df <- read_csv("...")
