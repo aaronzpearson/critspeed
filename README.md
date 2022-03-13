@@ -4,7 +4,7 @@
 
 Current workflow:
 
-install.packages("critspeed")
+devtools::install_github("critspeed")
 
 library(readr)
 library(critspeed)
@@ -14,12 +14,8 @@ df <- read_csv("...")
 max.mean.speed.df(df$max_speed)    
 max.median.speed.df(df$duration)    
 cs.results.model(df$max_speed)    
-cs.results.fitted(df$max_speed,    
-                  TRUE,    
-                  cv.2 = 120)    
-cs.results.plot(df$max_speed,    
-                TRUE,    
-                log.dur = FALSE)
+cs.results.fitted(df$max_speed)    
+cs.results.plot(df$max_speed, log.dur = FALSE)
 
 = = =
 
