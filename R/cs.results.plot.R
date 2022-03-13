@@ -23,7 +23,7 @@ cs.results.plot <- function(player.speed,
                             log.dur = FALSE,
                             resid = FALSE) {
 
-  cs.coef <- crit.speed.results(player.speed = player.speed,
+  cs.coef <- cs.results.model(player.speed = player.speed,
                                 global.data = global.data,
                                 sample.rate = sample.rate,
                                 dur = dur,
