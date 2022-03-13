@@ -10,7 +10,7 @@
 #' @param cv.2 min duration for CV2. Default set to 120 s
 #'
 #' @export
-crit.speed.results <- function(player.speed,
+cs.results.model <- function(player.speed,
                                global.data = FALSE,
                                sample.rate = 10,
                                cv.2 = 120, # minimum duration (default = 2 minutes)
