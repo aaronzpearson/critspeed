@@ -1,0 +1,15 @@
+Package: critspeed
+Type: Package
+Title: Critical speed modelling from player tracking data
+Version: 0.1.0
+Author: Aaron Pearson, Dani Chu, Eli Mizelman
+Maintainer: Aaron Pearson <aaron@midsprint.io>
+Description: Model critical speed, D', and max speed from player tracking data
+License: What license is it under?
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 7.1.2
+Imports:
+  minpack.lm,
+  Rfast,
+  data.table
