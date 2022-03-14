@@ -21,6 +21,8 @@ cs.results.plot(df$max_speed, log.dur = FALSE)
 
 To do:
 
+* need consistant argument call for speed col (either explicit or character)    
+
 * *&plotting functions (complete)*    
 * versatility of cs.results.observed.list(): *1. global vs session data (complete)*, 2. feed into crit.speed.results(), 3. feed into plotting functions, 4. *return as data.frame with residuals and raw max mean vel data (complete)*        
 * consistent function naming conventions (same concept as fvp package)    
