@@ -12,5 +12,12 @@
 \item{n}{duration}
 }
 \description{
-Max Mean Speed
+This is a helper function that feeds into `max.mean.speed.df`.
+}
+\details{
+The arguments for this function are minimal and it is not suggested that this function be 
+used on its own.
+
+`n` is in arbitrary units and does not take into account sample rate. Therefore, 
+users should be cautious when calling `max.mean.speed` exclusively.
 }

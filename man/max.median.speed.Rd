@@ -4,7 +4,7 @@
 \alias{max.median.speed}
 \title{Max Median Speed}
 \usage{
-\method{max}{median.speed}(x, n = "roeker", sample.rate = 10)
+\method{max}{median.speed}(x, n = "roecker", sample.rate = 10)
 }
 \arguments{
 \item{x}{player speed vector}
@@ -14,5 +14,17 @@
 \item{sample.rate}{in Hz}
 }
 \description{
-Max Median Speed
+This is a helper function that feeds into `max.median.speed.df`.
+}
+\details{
+The arguments for this function are minimal and it is not suggested that this function be 
+used on its own.
+
+`n` is in arbitrary units and does not take into account sample rate. Therefore, 
+users should be cautious when calling `max.median.speed` exclusively.
+}
+\references{
+Roecker, K., Mahler, H., Heyde, C., Röll, M., & Gollhofer, A. (2017). 
+The relationship between movement speed and duration during soccer matches. PLoS 
+ONE, 12(7), e0181781. https://doi.org/10.1371/journal.pone.0181781
 }
