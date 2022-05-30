@@ -1,8 +1,10 @@
-## first package iteration is up and running!
-
-= = =
+## critspeed V1 
 
 Current workflow:
+
+*Note* ... indicates that there are other arguments that should be filled-in    
+*Note* functions can continuously take on the raw/ GPS data - make sure you set raw.data = TRUE    
+*Note* if you are only working with GPS data, you can skip the critspeed() step    
 
 devtools::install_github("critspeed")
 
@@ -11,26 +13,19 @@ library(critspeed)
 
 df <- read_csv("...")
 
-max.mean.speed.df(df$max_speed)    
-max.median.speed.df(df$duration)    
-cs.results.model(df$max_speed)    
-cs.results.fitted(df$max_speed)    
-cs.results.plot(df$max_speed, log.dur = FALSE)
+df_clean <- clean.data(player.speed = df$max_speed, ...)    
+df_critspeed <- critspeed(data = list(df_clean), speed.col = "player.speed.metric", ...)    
+critspeed_model_results <- model.results(player.speed = df_critspeed$max.mean.speed, raw.data = FALSE, ...)     
+critspeed_model_fits <- model.fits(player.speed = df_critspeed$max.mean.speed, raw.data = FALSE, ...)    
+
+critspeed_plots <- model.plots(player.speed = df_critspeed$max.mean.speed, raw.data = FALSE, plots = c("fit", "resid", "qq"), ...)    
 
 = = =
 
 To do:
 
-* need consistant argument call for speed col (either explicit or character)    
-
-* *&plotting functions (complete)*    
-* versatility of cs.results.observed.list(): *1. global vs session data (complete)*, 2. feed into crit.speed.results(), 3. feed into plotting functions, 4. *return as data.frame with residuals and raw max mean vel data (complete)*        
-* consistent function naming conventions (same concept as fvp package)    
 * butterworth filter for roeker (in place of Kalman filter - Kalman filter in R is nearly impossible)    
 * look into stats::KalmanSmooth (small chance it will work)    
-* function documentation *Eli*    
-* explicit package dependency calls *nearly complete*    
-* double-check all package dependencies are documented as imports    
 
 Current dependencies:
 
@@ -41,8 +36,6 @@ Current dependencies:
 
 These package have (almost) no dependencies of their own    
 
-= = =
-
 # critspeed
 An R package to accompany Eli Mizelman's PhD dissertation
 
@@ -52,7 +45,7 @@ This package provides practitioners with the ability to model an athlete's criti
 * 3 parameter model    
 * 5 parameter model    
 * OmVD    
-* Exponential model *needs fixing*    
+* Exponential model  
 
 And those suggested by Roeker et al., 2017: *none of these are complete*    
 * Richard's logistic 5 parameter    
@@ -64,10 +57,8 @@ And those suggested by Roeker et al., 2017: *none of these are complete*
 * Decaying exponential 3 parameter    
 
 
-The values returned to the user include:    
+The parameter values returned to the user include:    
 * Critical speed/ aerobic velocity estimates    
 * Aerobic capacity (D') estimates    
-* Model fits    
+* Model goodness-of-fits    
 * Predicted values    
-    
-* D' balance can be modelled using the *stamina* package (currently beta version)
