@@ -109,7 +109,7 @@ cs.results.plot <- function(player.speed,
                                               model.fits = cs.fit,
                                               roecker = roecker) }
   
-  if(length(plots) > 2) {Sys.sleep(1)}
+  if(length(plots) > 2) {Sys.sleep(3)}
   
   if("qq" %in% plots) { cs.model.normality.plot(model.fits = cs.fit) }
   
