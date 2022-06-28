@@ -62,7 +62,7 @@ cs.five.param <- function(data,
                           max.speed.estim = 12) {
 
   cs.nls <- minpack.lm::nlsLM(max.mean.speed ~
-                  crit.speed + (max.speed - crit.speed)/ ((1 + exp(-a * log(duration) - b))^f),
+                  crit.speed + (max.speed - crit.speed)/ ((1 + exp(-a * (log(duration) - b)))^f),
                 data = data,
                 start = list(a = -2.71,
                              b = 2.195,
@@ -70,8 +70,8 @@ cs.five.param <- function(data,
                              crit.speed = crit.speed.estim,
                              max.speed = max.speed.estim),
                 control = nls.control(maxiter = 1000),
-                lower = c(-20, -20, -5, 1, 5.8), # should a, b, f have upper and lower of NA or -Inf and Inf ?
-                upper = c(20, 20, 5, 5.8, 12)
+                lower = c(NA, NA, NA, 1, 5.8),
+                upper = c(NA, NA, NA, 5.8, 12)
                   )
 
   cs.nls
