@@ -25,7 +25,9 @@ critspeed_plots <- model.plots(player.speed = df_critspeed$max.mean.speed, raw.d
 To do:
 
 * butterworth filter for roeker (in place of Kalman filter - Kalman filter in R is nearly impossible)    
-* look into stats::KalmanSmooth (small chance it will work)    
+* look into stats::KalmanSmooth (small chance it will work)      
+* complete documentation with examples    
+* fix data issues - currently can't compile the package with data provided for the user
 
 Current dependencies:
 
