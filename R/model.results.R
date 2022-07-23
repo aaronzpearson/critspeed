@@ -42,7 +42,7 @@
 #' @param sample.rate in Hz, default set to 10
 #' @param cv.2 start duration for CV2, default set to 120 s
 #' @param dur duration, default set to 600
-#' @param d.prime.estim D' estimate, default set to 100 m
+#' @param d.prime.estim D' estimate, default set to 150 m
 #' @param crit.speed.estim critical speed estimate, default set to 3.5 m/s
 #' @param max.speed.estim max speed, default set to 12 m/s
 #' @param roecker indicates whether multiple durations are provided, default set to FALSE

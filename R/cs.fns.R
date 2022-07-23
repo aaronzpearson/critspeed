@@ -2,7 +2,7 @@
 #' 
 #' A model output that includes parameter estimates and model goodness-of-fit.
 #' 
-#' The critical speed model functions are helper functions that feed into `model.results` and `model.fits` to 
+#' The critical speed model functions are helper functions that feed into \code{model.results()} and \code{model.fits()} to 
 #' return summarized model fits and fitted data, respectively. 
 #' 
 #' Using nonlinear regression, `minpack.lm::nlsLM`, you can fit the six mathematical models (CV2, CV3, OmVD, 5-PL, exp, exp decay). 
@@ -16,26 +16,51 @@
 #' The `data` argument requires the data to be processed via `critspeed::critspeed`, `max.mean.speed.df`, or 
 #' `max.median.speed.df`.
 #' 
-#' For more details, please see `model.results` and `model.fits`.
+#' For more details, please see [model.results] and [model.fits].
 #' 
-#' @seealso model.results, model.fits
+#' @seealso [model.results], [model.fits]
 #'
 #' @param data a data frame of the form critspeed
-#' @param d.prime.estim D' estimate, default set to 100 m
+#' @param d.prime.estim D' estimate, default set to 150 m
 #' @param crit.speed.estim critical speed estimate, default set to 3.5 m/s
 #' @param max.speed.estim max speed, default set to 12 m/s
 #'
 #' @export
-cs.fns <- function(data, 
-                      d.prime.estim = 100,
-                      crit.speed.estim = 3.5,
-                      max.speed.estim = 12) 
-  
-  { }
+#' 
+#' @examples 
+#' # From raw data
+#' data(raw_practice)
+#' 
+#' # Clean data
+#' clean_practice <- clean.data(player.speed = raw_practice$speed, satellite.quality = raw_practice$hdop, max.speed = 12, max.satellite.quality = 2, metrics = "m/s")
+#' 
+#' # Build speed-duration data frame
+#' # See ?critspeed::critspeed for more information
+#' critspeed_practice <- critspeed(data = list(clean_practice), speed.col = "player.speed.metric", raw.data = TRUE, sample.rate = 10, dur = 600, roecker = FALSE)
+#' 
+#' # Fit models
+#' # Can also call upon `model.results` for a succinct printout of the model fits
+#' two_p <- critspeed:::cs.two.param(data = critspeed_practice, d.prime.estim = 150, crit.speed.estim = 3.5)
+#' three_p <- critspeed:::cs.three.param(data = critspeed_practice, d.prime.estim = 150, crit.speed.estim = 3.5, max.speed.estim = 12)
+#' five_p <- critspeed:::cs.five.param(data = critspeed_practice,crit.speed.estim = 3.5)
+#' omvd <- critspeed:::cs.extended.model(data = critspeed_practice, d.prime.estim = 150, crit.speed.estim = 3.5, max.speed.estim = 12)
+#' 
+#' two_p; three_p; five_p; omvd
+#' 
+#' # Predict 
+#' # Example is only for the 2 Parameter model
+#' # Can also call upon `model.fits` for a succinct printout of the predicted model fits
+#' two_p_pred <- data.frame(duration = (1:600)/sample.rate) # at 10 Hz
+#' two_p_pred$max.mean.speed <- predict(two_p, newdata = two_p_pred)
+#' 
+#' head(two_p_pred)
+#' 
+#' plot(critspeed_practice$duration, critspeed_practice$max.mean.speed)
+#' lines(two_p_pred$duration, two_p_pred$max.mean.speed)
 
 #' @describeIn cs.fns OmVD Model
 cs.extended.model <- function(data,
-                              d.prime.estim = 100,
+                              d.prime.estim = 150,
                               crit.speed.estim = 3.5,
                               max.speed.estim = 12) {
 
@@ -70,7 +95,7 @@ cs.five.param <- function(data,
                              crit.speed = crit.speed.estim,
                              max.speed = max.speed.estim),
                 control = nls.control(maxiter = 1000),
-                lower = c(NA, NA, NA, 1, 5.8),
+                lower = c(NA, NA, NA, 1, 5.8), # should a, b, f have upper and lower of NA or -Inf and Inf ?
                 upper = c(NA, NA, NA, 5.8, 12)
                   )
 

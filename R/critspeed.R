@@ -117,7 +117,7 @@ cs.critspeed <- function(data = list(),
  
   
   set.one.max.mean <- data.table::data.table(set.one.max.mean)
-  set.one.max.mean.global <- set.one.max.mean[, max(max.mean.speed), by = duration]
+  set.one.max.mean.global <- set.one.max.mean[, max(max.mean.speed, na.rm = TRUE), by = "duration"]
   colnames(set.one.max.mean.global) <- c("duration", "max.mean.speed")
   
   if(roecker == TRUE) {colnames(set.one.max.mean.global) <- c("duration", "max.median.speed")}

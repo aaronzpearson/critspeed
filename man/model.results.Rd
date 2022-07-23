@@ -27,7 +27,7 @@ model.results(
 
 \item{dur}{duration, default set to 600}
 
-\item{d.prime.estim}{D' estimate, default set to 100 m}
+\item{d.prime.estim}{D' estimate, default set to 150 m}
 
 \item{crit.speed.estim}{critical speed estimate, default set to 3.5 m/s}
 

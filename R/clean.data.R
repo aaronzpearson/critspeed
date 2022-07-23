@@ -34,16 +34,28 @@ clean.data <- function(player.speed,
   
   dat$player.speed = player.speed
   
-  if(!is.na(satellite.quality)) { dat$satellite.quality = satellite.quality }
+  suppressWarnings(
+    suppressMessages(
+      
+      if(!is.na(satellite.quality)) { dat$satellite.quality = satellite.quality }    
+      
+    )
+  )
   
-  dat$player.speed.metric = convert.to.metric(player.speed, units = metric)
+  dat$player.speed.metric = convert.to.metric(player.speed, units = metrics)
   
   dat <- subset(dat, player.speed.metric <= max.speed)
   
-  if(!is.an(satellite.quality)) { dat <- subset(dat, satellite.quality <= max.satellite.quality) }
+  suppressWarnings(
+    suppressMessages(  
   
-  dat
+      if(!is.na(satellite.quality)) { dat <- subset(dat, satellite.quality <= max.satellite.quality) }
+    
+      )
+  )
 
+  dat   
+  
 }
 
 convert.to.metric <- function(value, units = "m/s") {
