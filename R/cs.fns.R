@@ -61,8 +61,8 @@
 #' @describeIn cs.fns OmVD Model
 cs.extended.model <- function(data,
                               d.prime.estim = 150,
-                              crit.speed.estim = 3.5,
-                              max.speed.estim = 12) {
+                              crit.speed.estim = 4,
+                              max.speed.estim = 9) {
 
   cs.nls <- minpack.lm::nlsLM(max.mean.speed ~
                   crit.speed + d.prime * (1 - exp(-1 * duration * (max.speed - crit.speed)/ d.prime))/duration,
@@ -73,7 +73,7 @@ cs.extended.model <- function(data,
                   max.speed = max.speed.estim
                   ),
                 control = nls.control(maxiter = 1000),
-                lower = c(10, 1, 5.8),
+                lower = c(10, 1, 4),
                 upper = c(800, 5.8, 12)
                 )
 
@@ -83,8 +83,8 @@ cs.extended.model <- function(data,
 
 #' @describeIn cs.fns Five Parameter Model
 cs.five.param <- function(data,
-                          crit.speed.estim = 3.5,
-                          max.speed.estim = 12) {
+                          crit.speed.estim = 4,
+                          max.speed.estim = 9) {
 
   cs.nls <- minpack.lm::nlsLM(max.mean.speed ~
                   crit.speed + (max.speed - crit.speed)/ ((1 + exp(-a * (log(duration) - b)))^f),
@@ -95,7 +95,7 @@ cs.five.param <- function(data,
                              crit.speed = crit.speed.estim,
                              max.speed = max.speed.estim),
                 control = nls.control(maxiter = 1000),
-                lower = c(NA, NA, NA, 1, 5.8), # should a, b, f have upper and lower of NA or -Inf and Inf ?
+                lower = c(NA, NA, NA, 1, 4),
                 upper = c(NA, NA, NA, 5.8, 12)
                   )
 
@@ -106,8 +106,8 @@ cs.five.param <- function(data,
 #' @describeIn cs.fns Three Parameter Model
 cs.three.param <- function(data,
                            d.prime.estim = 150,
-                           crit.speed.estim = 3.5,
-                           max.speed.estim = 12) {
+                           crit.speed.estim = 4,
+                           max.speed.estim = 9) {
 
   cs.nls <- minpack.lm::nlsLM(max.mean.speed ~
                   crit.speed + d.prime / (duration + d.prime / (max.speed - crit.speed)),
@@ -116,7 +116,7 @@ cs.three.param <- function(data,
                              crit.speed = crit.speed.estim,
                              max.speed = max.speed.estim),
                 control = nls.control(maxiter = 1000),
-                lower = c(10, 1, 5.8),
+                lower = c(10, 1, 4),
                 upper = c(800, 5.8, 12)
   )
 
@@ -127,7 +127,7 @@ cs.three.param <- function(data,
 #' @describeIn cs.fns Two Parameter Model
 cs.two.param <- function(data,
                          d.prime.estim = 150,
-                         crit.speed.estim = 3.5) {
+                         crit.speed.estim = 4) {
 
   cs.nls <- minpack.lm::nlsLM(max.mean.speed ~
                   d.prime/ duration + crit.speed,
@@ -145,7 +145,7 @@ cs.two.param <- function(data,
 
 #' @describeIn cs.fns Exponential Model
 cs.exponential <- function(data,
-                           crit.speed.estim = 3.5,
+                           crit.speed.estim = 4,
                            max.speed.estim = 12) {
 
   cs.nls <- minpack.lm::nlsLM(max.mean.speed ~
@@ -157,7 +157,7 @@ cs.exponential <- function(data,
                   tau = 1
                   ),
                 control = nls.control(maxiter = 1000),
-                lower = c(1, 5.8, 0),
+                lower = c(1, 4, 0),
                 upper = c(5.8, 12, 5)
   )
 
