@@ -17,7 +17,7 @@ nls bounds:
 How to:    
 
 **install package**    
-devtools::install_github("critspeed")
+devtools::install_github("aaronzpearson/critspeed")
 
 **load package**    
 library(readr)    
