@@ -1,57 +1,36 @@
 ## first package iteration is up and running!
 
-### Note
-
-nls starting values:    
-* d': 150 m    
-* Vmax: 9 m/s    
-* CV: 4 m/s    
-
-nls bounds:    
-* d': 10, 800    
-* Vmax: 4, 12 m/s    
-* CV: 1, 5.8 m/s    
-
 = = =
 
-How to:    
+Current workflow:
 
-**install package**    
-devtools::install_github("aaronzpearson/critspeed")
+devtools::install_github("critspeed")
 
-**load package**    
 library(readr)    
 library(critspeed)
 
-**read data**    
 df <- read_csv("...")
 
-**model MMV**    
-critspeed::critspeed()    
-
-**model fits**    
-critspeed::model.results()    
-
-**basic plots**    
-critspeed::model.plots()    
-
-**compare model fits**    
-critspeed::model.results.compare()    
+max.mean.speed.df(df$max_speed)    
+max.median.speed.df(df$duration)    
+cs.results.model(df$max_speed)    
+cs.results.fitted(df$max_speed)    
+cs.results.plot(df$max_speed, log.dur = FALSE)
 
 = = =
 
 To do:
 
-* versatility of cs.results.observed.list():    
-    *1. global vs session data (complete)*,    
-     2. feed into crit.speed.results(),     
-     3. feed into plotting functions,            
+* need consistant argument call for speed col (either explicit or character)    
+
+* *&plotting functions (complete)*    
+* versatility of cs.results.observed.list(): *1. global vs session data (complete)*, 2. feed into crit.speed.results(), 3. feed into plotting functions, 4. *return as data.frame with residuals and raw max mean vel data (complete)*        
+* consistent function naming conventions (same concept as fvp package)    
+* butterworth filter for roeker (in place of Kalman filter - Kalman filter in R is nearly impossible)    
+* look into stats::KalmanSmooth (small chance it will work)    
+* function documentation *Eli*    
+* explicit package dependency calls *nearly complete*    
 * double-check all package dependencies are documented as imports    
-* remove exponential function?    
-* add all roecker algorithms?    
-* add arithmetic algorithms?    
-* add t[inv] algorithm?    
-* improve fit (marginal) w/ optim fctn?    
 
 Current dependencies:
 

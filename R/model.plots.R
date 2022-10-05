@@ -1,119 +1,150 @@
 #' Plots for Model Fits, Residuals, and Normality
 #' 
-#' Provides the user the ability to produce plots that can return model fits, residuals, and normality as 
-#' represented by Q-Q plots.
+#' Provides the user the ability to produce plots that can return model fits, residuals, and normality.
 #' 
-#' This function calls upon `model.fits` and `model.results` to produce the following plots: 1. critspeed data with the 
-#' model fits over-layed, an asymptote that represents the player's critical speed, and the critical speed value (`fit`), 2. 
-#' the plotted residuals for each model (`resid`), and 3. quantile-quantile (Q-Q) plot as a test of normality (`qq`). Each plot is 
-#' made-up of four panes, each of which represents either the 2 parameter, 3 parameter, 5 parameter, or OmVD models. 
-#' These models were selected because they have been validated as part of the dissertation of Eli Mizelman, PhD. 
+#' This function returns the following plots: 
+#' \itemize{
+#' \item `summary`: a four panel plot that includes fitted values, residuals vs fitted, qq, and density of residuals plots
+#' \item `fit`: observed and fitted values, including a horizontal asymptote with a critical speed annotation
+#' \item `residual`: residual vs fitted values to observe scedacity
+#' \item `qq`: a Q-Q plot for observation distribution
+#' \item `density`: density of residuals to observe whether residuals are normally distributed
+#' }
 #' 
-#' The user has the option to have one, two, or all plots returned in the `Plots` pane (when using RStudio). The 
-#' user can then save the plots manually. 
 #' 
-#' @note If users would like to produce plots that are representative of different models, they can do so 
-#' manually by calling `model.fits` and `model.results` and using the `cs.results.plot` function as a guide. 
+#' @param data data set containing at least two variables (see notes)
+#' @param model critical speed model name as either `two.param`, `three.param`, `five.param`, or `omvd` 
+#' @param output the type of plot returned, default is set to `summary` 
+#' @param cv.2 minimum duration to fit the two parameter function, default set to 120 s (see notes)
+#' @param log.dur plot duration as log10(duration), default set to FALSE
+#' @param method indicates whether the max mean or max median speed were calculated
+#' @param lower lower bounds for parameter fits (see notes)
+#' @param upper upper bounds for parameter fits (see notes)
+#' @param start starting values for parameter fits (see notes)
+#' @param ... supplement arguments passed, used primarily for developmental purposes and should not be assigned
 #' 
-#' If the user is returned an `Error`, please consult the `model.fits` and `model.results` documentation to 
-#' troubleshoot. `dur` and `roecker` are typically the main culprits when errors arise and the most-common 
-#' issues are outlined in the `model.fits` and `model.results` documentation. 
+#' @note 
 #' 
-#' @seealso model.fits.plot, model.residuals.plot, model.qq.plot 
+#' Users must be aware of the following requirements for the following arguments:    
+#' 
+#' \enumerate{
+#' \item `data` is a `data.frame` must satisfy the following criteria:
+#' \itemize{
+#' \item The first column is the duration variable
+#' \item The second column is the maximal mean speed or maximal median speed variable
+#' \item Subsequent columns will be disregarded
+#' }
+#' 
+#' Users can generate appropriate `data.frame`s using the `critspeed()` function
+#' 
+#' \item `cv.2` is the minimum duration used to fit the two parameter model. The default is set to 120 s as suggested by the prevailing 
+#' literature.
+#' 
+#' \item `lower`, `upper`, and `start` are the lower and upper bounds for the parameter fits, and initial parameter values, respectively 
+#' The default values are set based on various considerations including the prevailing literature and trial-and-error. The defaults are 
+#' outlined below in the form of `parameter: lower bound, start value, upper bound`:
+#' \itemize{
+#' \item d prime: 10, 150, 800 in meters
+#' \item critical speed: 1, 4, 5.8 in meters per second
+#' \item maximal speed: 4, 9, 12 in meters per second
+#' \item a: NA, -2.71, NA and is unitless
+#' \item b: NA, 2.195, NA and is unitless
+#' \item f: NA, 0.2, NA and is unitless
+#' }
+#' 
+#' }
 #'
-#' @param player.speed player speed vector
-#' @param sample.rate in Hz, default set to 10 Hz
-#' @param dur max duration, default set to 600 s
-#' @param raw.data data type being either raw (unprocessed, TRUE) or critspeed (processed, FALSE), default set to TRUE
-#' @param cv.2 start duration for CV2, default set to 120 s
-#' @param d.prime.estim D' estimate, default set to 100 m
-#' @param crit.speed.estim critical speed estimate, default set to 3.5 m/s
-#' @param max.speed.estim max speed, default set to 12 m/s
-#' @param roecker indicates whether multiple durations are provided, default set to FALSE
-#' @param log.dur should the fitted plots be returned on a log10 scale, default set to FALSE
-#' @param plots selection of plots to be returned, includes model fits, residuals, and normality (qq)
+#' @seealso [model.parameters], [model], [fitted.model]
 #'
-#' @export
-model.plots <- function(player.speed,
-                       raw.data = TRUE,
-                       sample.rate = 10,
-                       dur = 600,
-                       roecker = FALSE,
+#' @export plot.model
+#' @rdname plot.model
+plot.model <- function(data,
+                       model = c("two.param", "three.param", "five.param", "omvd"),
+                       output =  c("summary", "fit", "residual", "qq", "density"),
                        cv.2 = 120,
-                       d.prime.estim = 150,
-                       crit.speed.estim = 3.5,
-                       max.speed.estim = 12,
                        log.dur = FALSE,
-                       plots = c("fit", "resid", "qq")) {
+                       method = c("mean", "median"),
+                       lower = c(cs = 1, dp = 10, v0 = 5.8, a = NA, b = NA, f = NA),
+                       upper = c(cs = 5.8, dp = 800, v0 = 12, a = NA, b = NA, f = NA),
+                       start = c(cs = 4, dp = 150, v0 = 9, a = -2.71, b = 2.195, f = 0.2),
+                       ...) {
   
-  cs.results.plot(player.speed = player.speed,
-                  raw.data = raw.data,
-                  sample.rate = sample.rate,
-                  dur = dur,
-                  roecker = roecker,
-                  cv.2 = cv.2,
-                  d.prime.estim = d.prime.estim,
-                  crit.speed.estim = crit.speed.estim,
-                  max.speed.estim = max.speed.estim,
-                  log.dur = log.dur,
-                  plots = plots)
+  callCS("p.model", 
+      data = data,
+      model = model,
+      output = output,
+      cv.2 = cv.2,
+      log.dur = log.dur,
+      method = method,
+      lower = lower,
+      upper = upper,
+      start = start,
+      ...
+      )
   
 }
 
-cs.results.plot <- function(player.speed,
-                            raw.data = TRUE,
-                            sample.rate = 10,
-                            dur = 600,
-                            roecker = FALSE,
-                            cv.2 = 120,
-                            d.prime.estim = 150,
-                            crit.speed.estim = 3.5,
-                            max.speed.estim = 12,
-                            log.dur = FALSE,
-                            plots = c("fit", "resid", "qq")) {
+## helper function ##
 
-  # return model coefficients
-  cs.coef <- cs.results.model(player.speed = player.speed,
-                                raw.data = raw.data,
-                                sample.rate = sample.rate,
-                                dur = dur,
-                                cv.2 = cv.2,
-                                d.prime.estim = d.prime.estim,
-                                crit.speed.estim = crit.speed.estim,
-                                max.speed.estim = max.speed.estim, 
-                              roecker = roecker)
-
-  # return model fits
-  cs.fit <- cs.results.fitted(player.speed = player.speed,
-                                raw.data = raw.data,
-                                sample.rate = sample.rate,
-                                dur = dur,
-                                cv.2 = cv.2,
-                                d.prime.estim = d.prime.estim,
-                                crit.speed.estim = crit.speed.estim,
-                                max.speed.estim = max.speed.estim,
-                              roecker = roecker)
-
+# calls on various helper functions to produce the intended plot
+p.model <- function(data,
+                    model = c("two.param", "three.param", "five.param", "omvd"),
+                    output =  c("summary", "fit", "residual", "qq", "density"),
+                    cv.2 = 120,
+                    log.dur = FALSE,
+                    method = c("mean", "median"),
+                    lower = c(cs = 1, dp = 10, v0 = 5.8, a = NA, b = NA, f = NA),
+                    upper = c(cs = 5.8, dp = 800, v0 = 12, a = NA, b = NA, f = NA),
+                    start = c(cs = 4, dp = 150, v0 = 9, a = -2.71, b = 2.195, f = 0.2),
+                    ...) {
   
-  # output
-  if("fit" %in% plots) { cs.model.fits.plot(dur = dur, 
-                                         model.coefs = cs.coef, 
-                                         model.fits = cs.fit, 
-                                         log.dur = log.dur,
-                                         roecker = roecker) }
+  if(length(model) > 1) {stop("`model` must be of length 1. Select the model you would like returned")}
+  if(length(output) > 1) {output = "summary"}
+  if(length(method) > 1) {method = "mean"}
   
-  if(length(plots) > 1) {Sys.sleep(3)}
+  model.fit <- fitted.model(data = data,
+                            model = model,
+                            cv.2 = cv.2, 
+                            lower = lower,
+                            upper = upper, 
+                            start = start)
   
-  if("resid" %in% plots) { cs.model.residuals.plot(dur = dur,
-                                              log.dur = log.dur,
-                                              model.fits = cs.fit,
-                                              roecker = roecker) }
+  model.coefs <- model.parameters(data = data, 
+                                  model = model,
+                                  output = "model.fit",
+                                  cv.2 = cv.2,
+                                  lower = lower,
+                                  upper = upper, 
+                                  start = start)
   
-  if(length(plots) > 2) {Sys.sleep(1)}
+  switch(output,
+         summary = callCS("p.summary",
+                          model.fits = model.fit,
+                          model.coefs = model.coefs,
+                          model = model,
+                          log.dur = log.dur,
+                          method = method,
+                          ...),
+         fit = callCS("p.fit",
+                      model.fits = model.fit,
+                      model.coefs = model.coefs,
+                      model = model,
+                      log.dur = log.dur,
+                      method = method,
+                      ...),
+         residual = callCS("p.resid",
+                            model.fits = model.fit,
+                            model = model,
+                            log.dur = log.dur,
+                            ...),
+         qq = callCS("p.qq",
+                     model.fits = model.fit,
+                     model = model,
+                     ...),
+         density = callCS("p.density",
+                          model.fits = model.fit,
+                          model = model,
+                          ...)
+         )
   
-  if("qq" %in% plots) { cs.model.normality.plot(model.fits = cs.fit) }
-  
-
-  par(mfrow = c(1,1))
-
 }

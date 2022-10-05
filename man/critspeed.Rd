@@ -2,59 +2,47 @@
 % Please edit documentation in R/critspeed.R
 \name{critspeed}
 \alias{critspeed}
-\title{Generate a critspeed Data Frame}
+\title{Maximal Mean and Maximal Median Speed per Duration}
 \usage{
 critspeed(
-  data = list(),
-  speed.col = "max.mean.speed",
-  raw.data = TRUE,
-  sample.rate = 10,
+  player.speed,
   dur = 600,
-  roecker = FALSE
+  sample.rate = 10,
+  method = c("mean", "median")
 )
 }
 \arguments{
-\item{data}{a list of data frame(s)}
+\item{player.speed}{the player's speed vector}
 
-\item{speed.col}{name that corresponds with the speed/ velocity variable}
-
-\item{raw.data}{data type being either raw (unprocessed) or critspeed (processed), defaults set to TRUE}
+\item{dur}{duration(s) to calculate max mean or max median speed, default set to 600 s (see notes)}
 
 \item{sample.rate}{in Hz, default set to 10 Hz}
 
-\item{dur}{max duration, default set to 600 s}
-
-\item{roecker}{indicates whether multiple durations are provided, default set to FALSE}
+\item{method}{indicates whether the max mean or max median speed should be calculated}
 }
 \description{
-A data frame containing the max mean or max median player velocity for the selected duration.
+A `data.frame` that contains the greatest mean or median speed per duration.
 }
 \details{
-This function takes on one or multiple data sets in `list` form and returns the max mean or max median 
-velocity over the input `dur`. If a single session is input, it should be in the `raw` form, being GPS or
-LPS data. If a single session is input and `raw` is set to FALSE, the returned data set will match the 
-data loaded into the function.
-
-Inputting multiple sessions in a `list` format returns the greatest max mean or max median speed for all 
-sessions. Therefore, the `global` data set contains the greatest speed among all observations from all sessions. 
-It does not matter whether the data is `raw` when calculating the max mean or max median speed for all 
-observations. To note, when loading multiple `raw` data sets, processing time and required computer resources 
-increase. This is further exemplified when `roecker` is set to `TRUE`. 
-
-`dur` can be set to either a value of length 1L (single value) or `roecker`. When a single value is input, the 
-duration calculated from 0.1 to `dur`. If `dur` is set to `roecker`, the durations calculated are set to 
-those suggested in the original paper by Roecker, Mahler, Heyde, Röll, & Gollhofer (2017): 0.3, 0.5, 1, 2, 
-3, 4, 5, 6.5, 10, 13.5, 18, 30, 60, 120, 300, 600, 900, 1200, 1800, 2400, and 2700 s. 
-
-This function relies heavily on `data.table` and `Rfast`, both of which use a C++ backend. In doing so, 
+The `critspeed()` function calculates the moving averages or medians for an athlete's speed over a given duration. `player.speed` should be 
+input as the speed variable from the player's tracking data.
+}
+\note{
+\itemize{
+\item `dur`: Either an integer of length 1L or `"roecker"`
+\itemize{
+\item When an integer is input, the `data.frame` returned will encompass all values from 0.1 to `dur`
+\item An input of `"roecker"` selects the following durations, as was suggested by Roecker, Mahler, Heyde, Röll, & Gollhofer (2017): 0L, 0.3L, 0.5L, 1L, 2L, 3L, 4L, 5L, 6.5L, 10L, 13.5L, 18L, 30L, 60L, 120L, 300L, 600L, 900L, 1200L, 1800L, 2400L, 2700L. Note that these durations *must* return integers when multiplied by the `sample.rate`. For example, 0.3 s at 10 Hz returns a value of 3. If the `sample.rate` is 5, the value returned is 1.5 and will result in an error.
+}
+\item If `method` is assigned as `"median"`, processing time and resources are significantly increased. It is suggested that users opt for `dur = "roecker"` to minimize processing time and resources. 
+\item This function relies heavily on `data.table` and `Rfast`, both of which use a C++ backend. In doing so, 
 processing time is significantly decreased at the cost of computer resources. It is suggested that CPU and RAM 
-be available when running `critspeed::critspeed` to minimize the risk of an error occuring. Common `Error` messages 
+be available when running `critspeed()` to minimize the risk of an error occuring. Common `Error` messages 
 returned are that there is not enough memory available to assign a vector of size x MB. To avoid this error, 
-sufficient RAM must be available on your local machine. 
+sufficient RAM must be available on your local machine.
 
-Please see `help(max.mean.speed.df)` and `help(max.median.speed.df)` for greater details on the underlying 
-functions used to process the data.
+}
 }
 \seealso{
-max.mean.speed.df, max.median.speed.df
+[model], [compile], [model.parameters], [plot.model]
 }
