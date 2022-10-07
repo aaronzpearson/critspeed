@@ -9,34 +9,66 @@ compile(data, ...)
 \arguments{
 \item{data}{data set containing at least two variables (see notes)}
 
-\item{...}{other data sets that fulfill the requirements described in **Notes**}
+\item{...}{other data sets that fulfill the requirements described in \strong{Notes}}
 }
 \description{
 A lightweight function that returns the individuals greatest max mean and median speed per duration.
 }
 \details{
-This function provides practitioners the ability to return the greatest max mean and median speed per duration. The `data`
-and `...` arguments must be `data.frame`s or `data.table`s. It is suggested that practitioners use the `critspeed()` function 
-to generate the required `data.frame`s. 
+This function provides practitioners the ability to return the greatest max mean and median speed per duration. The \code{data}
+and \code{...} arguments must be \code{data.frame}s or \code{data.table}s. It is suggested that practitioners use the \code{critspeed()} function 
+to generate the required \code{data.frame}s. 
 
-Users are returned a `data.frame` that consists of either two or three variables. The first variable is always `duration`. The 
-second variable is either the maximal mean speed or maximal median speed per duration. If users input `data.frame`s that include 
-maximal mean and maximal median speeds, they will be returned a data frame with `duration`, `max.mean.speed`, and `max.median.speed` 
-variables (if they generated the data using the `critspeed()` function). This ensures that max mean and max median 
+Users are returned a \code{data.frame} that consists of either two or three variables. The first variable is always \code{duration}. The 
+second variable is either the maximal mean speed or maximal median speed per duration. If users input \code{data.frame}s that include 
+maximal mean and maximal median speeds, they will be returned a data frame with \code{duration}, \code{max.mean.speed}, and \code{max.median.speed} 
+variables (if they generated the data using the \code{critspeed()} function). This ensures that max mean and max median 
 speeds are not assumed to be interchangeable.
 }
 \note{
 Users must be aware of the following requirements for the following arguments:    
 
 \enumerate{
-\item `data` is a `data.frame` must satisfy the following criteria:
+\item \code{data} is a \code{data.frame} must satisfy the following criteria:
 \itemize{
-\item The first column is the duration variable
-\item The second column is the maximal mean speed or maximal median speed variable
-\item Subsequent columns will be return an error and must be removed before processing
+\item The first column is the duration variable called \code{duration}
+\item The second column is the maximal mean speed or maximal median speed variable and named accordingly (\code{max.mean.speed} or \code{max.median.speed})
+\item Subsequent columns will return an error and must be removed before processing
 }
 
-Users can generate appropriate `data.frame`s using the `critspeed()` function
+Users can generate appropriate \code{data.frame}s using the \code{critspeed()} function
 
 }
+}
+\examples{
+
+data(sessionMaxMeanSpeed)
+data(sessionMaxMedianSoeed)
+data(sessionRaw)
+
+# Compile Max Mean Speed
+
+\dontrun{
+
+session.mean <- critspeed(sessionRaw$speed,
+dur = 600,
+sample.rate = 10,
+method = "mean")
+
+compile.mean <- compile(sessionMaxMeanSpeed, session.mean)
+
+# head(compile.mean)
+
+
+# Compile Max Mean and Max Median Speed
+
+compile.mean.median <- compile(sessionMaxMeanSpeed, session.mean, sessionMaxMedianSpeed)
+
+# head(compile.mean.median)
+}
+
+
+}
+\seealso{
+\code{\link{critspeed}}
 }

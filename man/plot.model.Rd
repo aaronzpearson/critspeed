@@ -20,9 +20,9 @@
 \arguments{
 \item{data}{data set containing at least two variables (see notes)}
 
-\item{model}{critical speed model name as either `two.param`, `three.param`, `five.param`, or `omvd`}
+\item{model}{critical speed model name as either \code{"two.param"}, \code{"three.param"}, \code{"five.param"}, or \code{"omvd"}}
 
-\item{output}{the type of plot returned, default is set to `summary`}
+\item{output}{the type of plot returned, default is set to \code{summary}}
 
 \item{cv.2}{minimum duration to fit the two parameter function, default set to 120 s (see notes)}
 
@@ -44,32 +44,32 @@ Provides the user the ability to produce plots that can return model fits, resid
 \details{
 This function returns the following plots: 
 \itemize{
-\item `summary`: a four panel plot that includes fitted values, residuals vs fitted, qq, and density of residuals plots
-\item `fit`: observed and fitted values, including a horizontal asymptote with a critical speed annotation
-\item `residual`: residual vs fitted values to observe scedacity
-\item `qq`: a Q-Q plot for observation distribution
-\item `density`: density of residuals to observe whether residuals are normally distributed
+\item \code{summary}: a four panel plot that includes fitted values, residuals vs fitted, qq, and density of residuals plots
+\item \code{fit}: observed and fitted values, including a horizontal asymptote with a critical speed annotation
+\item \code{residual}: residual vs fitted values to observe scedacity
+\item \code{qq}: a Q-Q plot for observation distribution
+\item \code{density}: density of residuals to observe whether residuals are normally distributed
 }
 }
 \note{
 Users must be aware of the following requirements for the following arguments:    
 
 \enumerate{
-\item `data` is a `data.frame` must satisfy the following criteria:
+\item \code{data} is a \code{data.frame} must satisfy the following criteria:
 \itemize{
 \item The first column is the duration variable
 \item The second column is the maximal mean speed or maximal median speed variable
 \item Subsequent columns will be disregarded
 }
 
-Users can generate appropriate `data.frame`s using the `critspeed()` function
+Users can generate appropriate \code{data.frame}s using the \code{critspeed()} function
 
-\item `cv.2` is the minimum duration used to fit the two parameter model. The default is set to 120 s as suggested by the prevailing 
+\item \code{cv.2} is the minimum duration used to fit the two parameter model. The default is set to 120 s as suggested by the prevailing 
 literature.
 
-\item `lower`, `upper`, and `start` are the lower and upper bounds for the parameter fits, and initial parameter values, respectively 
+\item \code{lower}, \code{upper}, and \code{start} are the lower and upper bounds for the parameter fits, and initial parameter values, respectively 
 The default values are set based on various considerations including the prevailing literature and trial-and-error. The defaults are 
-outlined below in the form of `parameter: lower bound, start value, upper bound`:
+outlined below in the form of \code{parameter: lower bound, start value, upper bound}:
 \itemize{
 \item d prime: 10, 150, 800 in meters
 \item critical speed: 1, 4, 5.8 in meters per second
@@ -81,6 +81,35 @@ outlined below in the form of `parameter: lower bound, start value, upper bound`
 
 }
 }
+\examples{
+
+data(sessionMaxMeanSpeed)
+data(sessionMaxMedianSpeed)
+
+# Max Mean Summary Plots
+
+plot.model(data = sessionMaxMeanSpeed,
+model = "two.param",
+output = "summary",
+cv.2 = 0, 
+log.dur = FALSE,
+method = "mean",
+lower = c(cs = 1, dp = 10, v0 = 5.8, a = NA, b = NA, f = NA),
+upper = c(cs = 5.8, dp = 800, v0 = 12, a = NA, b = NA, f = NA),
+start = c(cs = 4, dp = 150, v0 = 9, a = -2.71, b = 2.195, f = 0.2))
+
+# Max Median Fitted Plot
+
+plot.model(data = sessionMaxMeanSpeed,
+model = "five.param",
+output = "fit",
+cv.2 = 120, 
+log.dur = TRUE,
+method = "mean",
+lower = c(cs = 1, dp = 10, v0 = 5.8, a = NA, b = NA, f = NA),
+upper = c(cs = 5.8, dp = 800, v0 = 12, a = NA, b = NA, f = NA),
+start = c(cs = 4, dp = 150, v0 = 9, a = -2.71, b = 2.195, f = 0.2))
+}
 \seealso{
-[model.parameters], [model], [fitted.model]
+\code{\link{model.parameters}}, \code{\link{model}}, \code{\link{fitted.model}}
 }

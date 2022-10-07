@@ -21,28 +21,53 @@ critspeed(
 \item{method}{indicates whether the max mean or max median speed should be calculated}
 }
 \description{
-A `data.frame` that contains the greatest mean or median speed per duration.
+A \code{data.frame} that contains the greatest mean or median speed per duration.
 }
 \details{
-The `critspeed()` function calculates the moving averages or medians for an athlete's speed over a given duration. `player.speed` should be 
+The \code{critspeed()} function calculates the moving averages or medians for an athlete's speed over a given duration. \code{player.speed} should be 
 input as the speed variable from the player's tracking data.
 }
 \note{
 \itemize{
-\item `dur`: Either an integer of length 1L or `"roecker"`
+\item \code{dur}: Either an integer of length 1L or \code{"roecker"}
 \itemize{
-\item When an integer is input, the `data.frame` returned will encompass all values from 0.1 to `dur`
-\item An input of `"roecker"` selects the following durations, as was suggested by Roecker, Mahler, Heyde, Röll, & Gollhofer (2017): 0L, 0.3L, 0.5L, 1L, 2L, 3L, 4L, 5L, 6.5L, 10L, 13.5L, 18L, 30L, 60L, 120L, 300L, 600L, 900L, 1200L, 1800L, 2400L, 2700L. Note that these durations *must* return integers when multiplied by the `sample.rate`. For example, 0.3 s at 10 Hz returns a value of 3. If the `sample.rate` is 5, the value returned is 1.5 and will result in an error.
+\item When an integer is input, the \code{data.frame} returned will encompass all values from 0.1 to \code{dur}
+\item An input of \code{"roecker"} selects the following durations, as was suggested by Roecker, Mahler, Heyde, Röll, & Gollhofer (2017): 0L, 0.3L, 0.5L, 1L, 2L, 3L, 4L, 5L, 6.5L, 10L, 13.5L, 18L, 30L, 60L, 120L, 300L, 600L, 900L, 1200L, 1800L, 2400L, 2700L. Note that these durations *must* return integers when multiplied by the \code{sample.rate}. For example, 0.3 s at 10 Hz returns a value of 3. If the \code{sample.rate} is 5, the value returned is 1.5 and will result in an error.
 }
-\item If `method` is assigned as `"median"`, processing time and resources are significantly increased. It is suggested that users opt for `dur = "roecker"` to minimize processing time and resources. 
-\item This function relies heavily on `data.table` and `Rfast`, both of which use a C++ backend. In doing so, 
+\item If \code{method} is assigned as \code{"median"}, processing time and resources are significantly increased. It is suggested that users opt for \code{dur = "roecker"} to minimize processing time and resources. 
+\item This function relies heavily on \code{data.table} and \code{Rfast}, both of which use a C++ back-end. In doing so, 
 processing time is significantly decreased at the cost of computer resources. It is suggested that CPU and RAM 
-be available when running `critspeed()` to minimize the risk of an error occuring. Common `Error` messages 
+be available when running \code{critspeed()} to minimize the risk of an error occurring. Common \code{Error} messages 
 returned are that there is not enough memory available to assign a vector of size x MB. To avoid this error, 
 sufficient RAM must be available on your local machine.
 
 }
 }
+\examples{
+
+data(sessionRaw)
+
+\dontrun{
+# Max Mean Speed
+
+session.mean <- critspeed(sessionRaw$speed,
+dur = 600,
+sample.rate = 10,
+method = "mean")
+
+# head(session.mean)
+
+# Max Median Speed
+
+session.median <- critspeed(sessionRaw$speed,
+dur = "roecker",
+sample.rate = 10,
+method = "median")
+
+# head(session.median)
+
+}
+}
 \seealso{
-[model], [compile], [model.parameters], [plot.model]
+\code{\link{model}}, \code{\link{compile}}, \code{\link{model.parameters}}, \code{\link{plot.model}}, \code{\link{fitted.model}}
 }

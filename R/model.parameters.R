@@ -1,10 +1,10 @@
 #' Summary of the Non-Linear Critical Speed Model Regressions
 #'
-#' A `data.frame` that contains the model parameters and either model goodness-of-fit or parameter fits.
+#' A \code{data.frame} that contains the model parameters and either model goodness-of-fit or parameter fits.
 #'
 #' @param data data set containing at least two variables (see notes)
-#' @param model critical speed model name as either `two.param`, `three.param`, `five.param`, or `omvd`
-#' @param output either `model.fit` which returns parameters and model goodness-of-fit or `parameter.fit` which returns extensive parameter fit information 
+#' @param model critical speed model name as either \code{"two.param"}, \code{"three.param"}, \code{"five.param"}, or \code{"omvd"}
+#' @param output either \code{model.fit} which returns parameters and model goodness-of-fit or \code{parameter.fit} which returns extensive parameter fit information 
 #' @param cv.2 minimum duration to fit the two parameter function, default set to 120 s (see notes)
 #' @param lower lower bounds for parameter fits (see notes)
 #' @param upper upper bounds for parameter fits (see notes)
@@ -15,21 +15,21 @@
 #' Users must be aware of the following requirements for the following arguments:    
 #' 
 #' \enumerate{
-#' \item `data` is a `data.frame` must satisfy the following criteria:
+#' \item \code{data} is a \code{data.frame} must satisfy the following criteria:
 #' \itemize{
 #' \item The first column is the duration variable
 #' \item The second column is the maximal mean speed or maximal median speed variable
 #' \item Subsequent columns will be disregarded
 #' }
 #' 
-#' Users can generate appropriate `data.frame`s using the `critspeed()` function
+#' Users can generate appropriate \code{data.frame}s using the \code{critspeed()} function
 #' 
-#' \item `cv.2` is the minimum duration used to fit the two parameter model. The default is set to 120 s as suggested by the prevailing 
+#' \item \code{cv.2} is the minimum duration used to fit the two parameter model. The default is set to 120 s as suggested by the prevailing 
 #' literature.
 #' 
-#' \item `lower`, `upper`, and `start` are the lower and upper bounds for the parameter fits, and initial parameter values, respectively 
+#' \item \code{lower}, \code{upper}, and \code{start} are the lower and upper bounds for the parameter fits, and initial parameter values, respectively 
 #' The default values are set based on various considerations including the prevailing literature and trial-and-error. The defaults are 
-#' outlined below in the form of `parameter: lower bound, start value, upper bound`:
+#' outlined below in the form of \code{parameter: lower bound, start value, upper bound}:
 #' \itemize{
 #' \item d prime: 10, 150, 800 in meters
 #' \item critical speed: 1, 4, 5.8 in meters per second
@@ -41,9 +41,38 @@
 #' 
 #' }
 #' 
-#' @seealso [model], [fitted.model], [critspeed]
+#' @seealso \code{\link{model}}, \code{\link{fitted.model}}, \code{\link{critspeed}}
 #'
 #' @export
+#' 
+#' @examples 
+#' 
+#' data(sessionMaxMeanSpeed)
+#' data(sessionMaxMedianSpeed)
+#' 
+#' # Max Mean Model Parameters
+#' 
+#' max.mean.parameters <- model.parameters(data = sessionMaxMeanSpeed,
+#' model = c("two.param", "three.param", "five.param", "omvd"),
+#' output = "model.fit",
+#' cv.2 = 0,
+#' lower = c(cs = 1, dp = 10, v0 = 5.8, a = NA, b = NA, f = NA),
+#' upper = c(cs = 5.8, dp = 800, v0 = 12, a = NA, b = NA, f = NA),
+#' start = c(cs = 4, dp = 150, v0 = 9, a = -2.71, b = 2.195, f = 0.2))
+#' 
+#' max.mean.parameters
+#' 
+#' # Max Median Model Parameters
+#' 
+#' max.median.parameters <- model.parameters(data = sessionMaxMedianSpeed,
+#' model = c("two.param", "three.param", "five.param", "omvd"),
+#' output = "parameter.fit",
+#' cv.2 = 120,
+#' lower = c(cs = 1, dp = 10, v0 = 5.8, a = NA, b = NA, f = NA),
+#' upper = c(cs = 5.8, dp = 800, v0 = 12, a = NA, b = NA, f = NA),
+#' start = c(cs = 4, dp = 150, v0 = 9, a = -2.71, b = 2.195, f = 0.2))
+#' 
+#' max.median.parameters 
 model.parameters <- function(data,
                              model = c("two.param", "three.param", "five.param", "omvd"),
                              output = c("model.fit", "parameter.fit"),
@@ -133,8 +162,8 @@ model.parameters <- function(data,
 ## helper functions ##
 
 # nls return for *one* model 
-# when called explicitly, extends `model.parameters()` by also returning nls summary
-# removed from model.parameters because it is redundant with `model()`
+# when called explicitly, extends \code{model.parameters()} by also returning nls summary
+# removed from model.parameters because it is redundant with \code{model()}
 model.return <- function(model.fit, 
                          model = c("two.param", "three.param", "five.param", "omvd"),
                          output = c("model.fit", "parameter.fit", "model")) {

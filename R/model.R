@@ -1,15 +1,15 @@
 #' Non-Linear Critical Speed Model Regressions
 #'
-#' A generic modelling function for the `critspeed` package.
+#' A generic modelling function for the \code{critspeed} package.
 #' 
-#' The `model()` function calls on the `minpack.lm::nlsLM()` function which minimizes the residual sum-of-squares (RSS) 
+#' The \code{model()} function calls on the \code{minpack.lm::nlsLM()} function which minimizes the residual sum-of-squares (RSS) 
 #' via the Levenberg-Marquardt algorithm.
 #' 
-#' This is a helper function that is called upon by `model.plots()` and `model.parameters()`, see **See Also**. The output
-#' reflects those from the `nlsLM()` function from the `minpack.lm` package. 
+#' This is a helper function that is called upon by \code{model.plots()} and \code{model.parameters()}, see \strong{See Also}. The output
+#' reflects those from the \code{nlsLM()} function from the \code{minpack.lm} package. 
 #' 
 #' @param data data set containing at least two variables (see notes)
-#' @param model critical speed model name as either `two.param`, `three.param`, `five.param`, or `omvd`
+#' @param model critical speed model name as either \code{"two.param"}, \code{"three.param"}, \code{"five.param"}, or \code{"omvd"}
 #' @param cv.2 minimum duration to fit the two parameter function, default set to 120 s (see notes)
 #' @param lower lower bounds for parameter fits (see notes)
 #' @param upper upper bounds for parameter fits (see notes)
@@ -20,21 +20,21 @@
 #' Users must be aware of the following requirements for the following arguments:    
 #' 
 #' \enumerate{
-#' \item `data` is a `data.frame` must satisfy the following criteria:
+#' \item \code{data} is a \code{data.frame} must satisfy the following criteria:
 #' \itemize{
 #' \item The first column is the duration variable
 #' \item The second column is the maximal mean speed or maximal median speed variable
 #' \item Subsequent columns will be disregarded
 #' }
 #' 
-#' Users can generate appropriate `data.frame`s using the `critspeed()` function
+#' Users can generate appropriate \code{data.frame}s using the \code{critspeed()} function
 #' 
-#' \item `cv.2` is the minimum duration used to fit the two parameter model. The default is set to 120 s as suggested by the prevailing 
+#' \item \code{cv.2} is the minimum duration used to fit the two parameter model. The default is set to 120 s as suggested by the prevailing 
 #' literature.
 #' 
-#' \item `lower`, `upper`, and `start` are the lower and upper bounds for the parameter fits, and initial parameter values, respectively 
+#' \item \code{lower}, \code{upper}, and \code{start} are the lower and upper bounds for the parameter fits, and initial parameter values, respectively 
 #' The default values are set based on various considerations including the prevailing literature and trial-and-error. The defaults are 
-#' outlined below in the form of `parameter: lower bound, start value, upper bound`:
+#' outlined below in the form of \code{parameter: lower bound, start value, upper bound}:
 #' \itemize{
 #' \item d prime: 10, 150, 800 in meters
 #' \item critical speed: 1, 4, 5.8 in meters per second
@@ -46,9 +46,36 @@
 #' 
 #' }
 #' 
-#' @seealso [critspeed], [model.plots], [model.parameters]
+#' @seealso \code{\link{critspeed}}, \code{\link{model.plots}}, \code{\link{model.parameters}}
 #'
 #' @export
+#' 
+#' @examples 
+#' 
+#' data(sessionMaxMeanSpeed)
+#' data(sessionMaxMedianSpeed)
+#' 
+#' # Max Mean Model
+#' 
+#' max.mean.model <- model(data = sessionMaxMeanSpeed,
+#' model = "three.param",
+#' cv.2 = 120,
+#' lower = c(cs = 1, dp = 10, v0 = 5.8, a = NA, b = NA, f = NA),
+#' upper = c(cs = 5.8, dp = 800, v0 = 12, a = NA, b = NA, f = NA),
+#' start = c(cs = 4, dp = 150, v0 = 9, a = -2.71, b = 2.195, f = 0.2))
+#' 
+#' max.mean.model
+#' 
+#' # Max Median Model
+#' 
+#' max.median.model <- model(data = sessionMaxMedianSpeed,
+#' model = "five.param",
+#' cv.2 = 120,
+#' lower = c(cs = 1, dp = 10, v0 = 5.8, a = NA, b = NA, f = NA),
+#' upper = c(cs = 5.8, dp = 800, v0 = 12, a = NA, b = NA, f = NA),
+#' start = c(cs = 4, dp = 150, v0 = 9, a = -2.71, b = 2.195, f = 0.2))
+#' 
+#' max.median.model
 model <- function(data,
                   model = c("two.param", "three.param", "five.param", "omvd"), 
                   cv.2 = 120,
@@ -67,7 +94,7 @@ model <- function(data,
 
 ## helper functions ##
 
-# called on by `fit.model()`
+# called on by \code{fit.model()}
 # written separately for development purposes
 # extensove critical speed nls fitting function
 models <- function(model = c("two.param", "three.param", "five.param", "omvd"), 

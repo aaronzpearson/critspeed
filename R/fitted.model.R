@@ -1,16 +1,16 @@
 #' Fitted Model Values
 #' 
-#' A `data.frame` that contains the fitted model values. 
+#' A \code{data.frame} that contains the fitted model values. 
 #' 
-#' `fitted.model()` is similar to the `stats` `fitted()` and `residuals()` functions. This function is more complex in that 
+#' \code{fitted.model()} is similar to the \code{stats} \code{fitted()} and \code{residuals()} functions. This function is more complex in that 
 #' it returns the original data, and the fitted and residual values for the selected models. This gives users the ability to generate 
-#' `data.frame`s that best suit their goals. 
+#' \code{data.frame}s that best suit their goals. 
 #' 
-#' The `data.frame` that is returned will always include `duration`, `log.duration`, and `max.speed` variables. It was decided that `max.speed` should 
+#' The \code{data.frame} that is returned will always include \code{duration}, \code{log.duration}, and \code{max.speed} variables. It was decided that \code{max.speed} should 
 #' represent maximal mean speed and maximal median speed. Discriminating between the two is impractical for the intended uses of this function. 
 #'
 #' @param data data set containing at least two variables (see notes)
-#' @param model critical speed model name as either `two.param`, `three.param`, `five.param`, or `omvd`
+#' @param model critical speed model name as either \code{"two.param"}, \code{"three.param"}, \code{"five.param"}, or \code{"omvd"}
 #' @param cv.2 minimum duration to fit the two parameter function, default set to 120 s (see notes)
 #' @param lower lower bounds for parameter fits (see notes)
 #' @param upper upper bounds for parameter fits (see notes)
@@ -21,21 +21,21 @@
 #' Users must be aware of the following requirements for the following arguments:    
 #' 
 #' \enumerate{
-#' \item `data` is a `data.frame` that must satisfy the following criteria:
+#' \item \code{data} is a \code{data.frame} that must satisfy the following criteria:
 #' \itemize{
 #' \item The first column is the duration variable
 #' \item The second column is the maximal mean speed or maximal median speed variable
 #' \item Subsequent columns will be disregarded
 #' }
 #' 
-#' Users can generate appropriate `data.frame`s using the `critspeed()` function
+#' Users can generate appropriate \code{data.frame}s using the \code{critspeed()} function
 #' 
-#' \item `cv.2` is the minimum duration used to fit the two parameter model. The default is set to 120 s as suggested by the prevailing 
+#' \item \code{cv.2} is the minimum duration used to fit the two parameter model. The default is set to 120 s as suggested by the prevailing 
 #' literature.
 #' 
-#' \item `lower`, `upper`, and `start` are the lower and upper bounds for the parameter fits, and initial parameter values, respectively 
+#' \item \code{lower}, \code{upper}, and \code{start} are the lower and upper bounds for the parameter fits, and initial parameter values, respectively 
 #' The default values are set based on various considerations including the prevailing literature and trial-and-error. The defaults are 
-#' outlined below in the form of `parameter: lower bound, start value, upper bound`:
+#' outlined below in the form of \code{parameter: lower bound, start value, upper bound}:
 #' \itemize{
 #' \item d prime: 10, 150, 800 in meters
 #' \item critical speed: 1, 4, 5.8 in meters per second
@@ -50,7 +50,34 @@
 #' @export fitted.model
 #' @rdname fitted.model
 #' 
-#' @seealso [model], [model.parameters], [critspeed]
+#' @seealso \code{\link{model}}, \code{\link{model.parameters}}, \code{\link{critspeed}}
+#' 
+#' @examples 
+#' 
+#' data(sessionMaxMeanSpeed)
+#' data(sessionMaxMedianSpeed)
+#' 
+#' # Max Mean Fitted 
+#' 
+#' session.mean.fitted <- fitted.model(data = sessionMaxMeanSpeed,
+#' model = c("two.param", "three.param", "five.param", "omvd"),
+#' cv.2 = 120,
+#' lower = c(cs = 1, dp = 10, v0 = 5.8, a = NA, b = NA, f = NA),
+#' upper = c(cs = 5.8, dp = 800, v0 = 12, a = NA, b = NA, f = NA),
+#' start = c(cs = 4, dp = 150, v0 = 9, a = -2.71, b = 2.195, f = 0.2))
+#' 
+#' # head(session.mean.fitted)
+#' 
+#' # Max Median Fitted 
+#' 
+#' session.median.fitted <- fitted.model(data = sessionMaxMedianSpeed,
+#' model = c("two.param", "three.param", "five.param", "omvd"),
+#' cv.2 = 120,
+#' lower = c(cs = 1, dp = 10, v0 = 5.8, a = NA, b = NA, f = NA),
+#' upper = c(cs = 5.8, dp = 800, v0 = 12, a = NA, b = NA, f = NA),
+#' start = c(cs = 4, dp = 150, v0 = 9, a = -2.71, b = 2.195, f = 0.2))
+#' 
+#' # head(session.median.fitted)
 fitted.model <- function(data,
                          model = c("two.param", "three.param", "five.param", "omvd"),
                          cv.2 = 120,
@@ -72,13 +99,13 @@ fitted.model <- function(data,
 
 # extended nls fitted values call
 fit.model <- function(data,
-                         model = c("two.param", "three.param", "five.param", "omvd"),
-                         cv.2 = 120,
-                         lower = c(cs = 1, dp = 10, v0 = 5.8, a = NA, b = NA, f = NA),
-                         upper = c(cs = 5.8, dp = 800, v0 = 12, a = NA, b = NA, f = NA),
-                         start = c(cs = 4, dp = 150, v0 = 9, a = -2.71, b = 2.195, f = 0.2)) {
+                      model = c("two.param", "three.param", "five.param", "omvd"),
+                      cv.2 = 120,
+                      lower = c(cs = 1, dp = 10, v0 = 5.8, a = NA, b = NA, f = NA),
+                      upper = c(cs = 5.8, dp = 800, v0 = 12, a = NA, b = NA, f = NA),
+                      start = c(cs = 4, dp = 150, v0 = 9, a = -2.71, b = 2.195, f = 0.2)) {
   
-
+  
   colnames(data) <- c("duration", "max.mean.speed")
   
   fitted.data <- data.frame(duration = data$duration,
