@@ -49,7 +49,7 @@ Users can generate appropriate \code{data.frame}s using the \code{critspeed()} f
 \examples{
 
 data(sessionMaxMeanSpeed)
-data(sessionMaxMedianSoeed)
+data(sessionMaxMedianSpeed)
 data(sessionRaw)
 
 # Compile Max Mean Speed
