@@ -4,12 +4,14 @@
 \alias{compile}
 \title{Greatest Maximal Mean and Median Speed per Duration}
 \usage{
-compile(data, ...)
+compile(data, ..., index = TRUE)
 }
 \arguments{
 \item{data}{data set containing at least two variables (see notes)}
 
 \item{...}{other data sets that fulfill the requirements described in \strong{Notes}}
+
+\item{index}{returns the session that contained the greatest max mean or max median speed, default set to TRUE}
 }
 \description{
 A lightweight function that returns the individuals greatest max mean and median speed per duration.
@@ -24,6 +26,9 @@ second variable is either the maximal mean speed or maximal median speed per dur
 maximal mean and maximal median speeds, they will be returned a data frame with \code{duration}, \code{max.mean.speed}, and \code{max.median.speed} 
 variables (if they generated the data using the \code{critspeed()} function). This ensures that max mean and max median 
 speeds are not assumed to be interchangeable.
+
+Indexing returns the session from which the max mean or max median speed was calculated. The variable, `.id`, returns an integer that corresponds with 
+the position of the \code{data.frame} when input into \code{compile()}.
 }
 \note{
 Users must be aware of the following requirements for the following arguments:    
@@ -35,6 +40,7 @@ Users must be aware of the following requirements for the following arguments:
 \item The second column is the maximal mean speed or maximal median speed variable and named accordingly (\code{max.mean.speed} or \code{max.median.speed})
 \item Subsequent columns will return an error and must be removed before processing
 }
+\item \code{index} returns a warning when variable names are inconsistent
 
 Users can generate appropriate \code{data.frame}s using the \code{critspeed()} function
 
@@ -55,15 +61,16 @@ dur = 600,
 sample.rate = 10,
 method = "mean")
 
-compile.mean <- compile(sessionMaxMeanSpeed, session.mean)
+compile.mean <- compile(sessionMaxMeanSpeed, session.mean, index = TRUE)
 
 # head(compile.mean)
 
 
 # Compile Max Mean and Max Median Speed
 
-compile.mean.median <- compile(sessionMaxMeanSpeed, session.mean, sessionMaxMedianSpeed)
+compile.mean.median <- compile(sessionMaxMeanSpeed, session.mean, sessionMaxMedianSpeed, index = TRUE)
 
+# returns a warning and will not index the max mean and max median speeds
 # head(compile.mean.median)
 }
 
