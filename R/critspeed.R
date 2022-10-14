@@ -82,9 +82,13 @@ critspeed <- function(player.speed,
 #' maximal mean and maximal median speeds, they will be returned a data frame with \code{duration}, \code{max.mean.speed}, and \code{max.median.speed} 
 #' variables (if they generated the data using the \code{critspeed()} function). This ensures that max mean and max median 
 #' speeds are not assumed to be interchangeable.
+#' 
+#' Indexing returns the session from which the max mean or max median speed was calculated. The variable, `.id`, returns an integer that corresponds with 
+#' the position of the \code{data.frame} when input into \code{compile()}.
 #'
 #' @param data data set containing at least two variables (see notes)
 #' @param ... other data sets that fulfill the requirements described in \strong{Notes}
+#' @param index returns the session that contained the greatest max mean or max median speed, default set to TRUE
 #' 
 #' @note 
 #' 
@@ -97,6 +101,7 @@ critspeed <- function(player.speed,
 #' \item The second column is the maximal mean speed or maximal median speed variable and named accordingly (\code{max.mean.speed} or \code{max.median.speed})
 #' \item Subsequent columns will return an error and must be removed before processing
 #' }
+#' \item \code{index} returns a warning when variable names are inconsistent
 #' 
 #' Users can generate appropriate \code{data.frame}s using the \code{critspeed()} function
 #' 
@@ -121,73 +126,89 @@ critspeed <- function(player.speed,
 #' sample.rate = 10,
 #' method = "mean")
 #' 
-#' compile.mean <- compile(sessionMaxMeanSpeed, session.mean)
+#' compile.mean <- compile(sessionMaxMeanSpeed, session.mean, index = TRUE)
 #' 
 #' # head(compile.mean)
 #'
 #'
 #' # Compile Max Mean and Max Median Speed
 #' 
-#' compile.mean.median <- compile(sessionMaxMeanSpeed, session.mean, sessionMaxMedianSpeed)
+#' compile.mean.median <- compile(sessionMaxMeanSpeed, session.mean, sessionMaxMedianSpeed, index = TRUE)
 #' 
+#' # returns a warning and will not index the max mean and max median speeds
 #' # head(compile.mean.median)
 #' }
 #' 
 #' 
-compile <- function(data, ...) { # best of multiple sessions
+compile <- function(data, ..., index = TRUE) { # best of multiple sessions
   
   callCS("max.critspeed",
          data = data,
-         ...)
+         ...,
+         index = index)
   
 }
 
 ## helper function ##
 
 # extended compile call
-max.critspeed <- function(data, ...) {
+max.critspeed <- function(data, ..., index = TRUE) {
   
-  rbindx <- function(..., dfs=list(...)) {
-    ns <- unique(unlist(sapply(dfs, names)))
-    do.call(rbind, lapply(dfs, function(x) {
-      for(n in ns[! ns %in% names(x)]) {x[[n]] <- NA}; x }))
-  }
+  mmv = data.table::rbindlist(list(data, ...), 
+                              idcol = TRUE,
+                              fill = TRUE,
+                              use.names = TRUE)
   
-  mmv = rbindx(data, ...)
   mmv[is.na(mmv)] <- 0
-  
   cols <- colnames(mmv)
-  
-  if(length(colnames(mmv)) == 2) {
-    
-    colnames(mmv) <- c("duration", "mmv")
-    
-    mmv.max <- aggregate(mmv ~ duration,
-                         data = mmv,
-                         FUN = max,
-                         na.rm = FALSE)
-    
-  }
   
   if(length(colnames(mmv)) == 3) {
     
-    colnames(mmv) <- c("duration", "mmv1", "mmv2")
+    mmv.temp <- mmv
     
-    mmv.max <- aggregate(cbind(mmv1, mmv2) ~ duration,
-                         data = mmv,
+    colnames(mmv.temp) <- c(".id", "duration", "mmv")
+    
+    mmv.max <- aggregate(mmv ~ duration,
+                         data = mmv.temp,
                          FUN = max,
                          na.rm = FALSE)
     
-    mmv.max[mmv.max == 0] <- NA
+    colnames(mmv.max) <- cols[-1]
+    
+    if(index == TRUE) {
+      
+      mmv.merge <- merge(mmv.max, mmv)
+      mmv.merge <- mmv.merge[order(mmv.merge$duration), ]
+      row.names(mmv.merge) <- 1:nrow(mmv.merge)
+      return(mmv.merge)
+      
+    } else if(index == FALSE) {
+      
+      colnames(mmv.max) <- cols[-1]
+      return(mmv.max)
+      
+    }
     
   }
   
-  colnames(mmv.max) <- cols
-  
-  return(
-    data.frame(
-      mmv.max
-    )
-  )
-  
+  if(length(colnames(mmv)) == 4) {
+    
+    mmv.temp <- mmv
+    
+    colnames(mmv.temp) <- c(".id", "duration", "mmv1", "mmv2")
+    
+    mmv.max <- aggregate(cbind(mmv1, mmv2) ~ duration,
+                         data = mmv.temp,
+                         FUN = max,
+                         na.rm = FALSE)
+    
+    if(index == TRUE) {warning("Indexing is not possible when data frames have inconsistent variable names. 
+                               \nThe returned data frame has not been indexed")}
+    
+    colnames(mmv.max) <- cols[-1]
+    mmv.max[mmv.max == 0] <- NA
+    
+    return(mmv.max)
+    
+  }
 }
