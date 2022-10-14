@@ -114,7 +114,7 @@ critspeed <- function(player.speed,
 #' @examples 
 #' 
 #' data(sessionMaxMeanSpeed)
-#' data(sessionMaxMedianSoeed)
+#' data(sessionMaxMedianSpeed)
 #' data(sessionRaw)
 #' 
 #' # Compile Max Mean Speed
