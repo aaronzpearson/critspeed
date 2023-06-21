@@ -66,7 +66,7 @@ head(mmv.sample)
 
 This data can then be visualized using a simple `plot()` function.
 
-```{r, fig.align="center"}
+```{r plot mmv, fig.align="center"}
 plot(max.mean.speed ~ duration, 
      data = mmv.sample,
      xlab = "Duration (s)",
@@ -148,7 +148,7 @@ head(mmv.compile)
 
 Users can visualize which observations were pulled from their respective data sets by plotting them as follows:
 
-```{r, fig.align="center"}
+```{r plot compile, fig.align="center"}
 plot(max.mean.speed ~ duration, mmv.compile,
      col = mmv.compile$.id,
      xlab = "Duration (s)",
@@ -182,7 +182,7 @@ head(mmv.observations)
 
 These data can be visualized using the `plot()` function. The maximal mean speed for the player at 5 s is 7.3 m/s and is visualized on the plot by the horizontal grey line.
 
-```{r, , fig.align="center"}
+```{r plot speed observations, fig.align="center"}
 plot(player.speed ~ time, 
      mmv.observations, 
      "l",

@@ -59,7 +59,7 @@ plot(max.mean.speed ~ duration,
      ylab = "Max Mean Velocity (m/s)")
 ```
 
-<img src="README_files/figure-gfm/unnamed-chunk-2-1.jpeg" style="display: block; margin: auto;" />
+<img src="README_files/figure-gfm/plot mmv-1.jpeg" style="display: block; margin: auto;" />
 
 ------------------------------------------------------------------------
 
@@ -196,7 +196,7 @@ plot(max.mean.speed ~ duration, mmv.compile,
      ylab = "Max Mean Velocity (m/s)")
 ```
 
-<img src="README_files/figure-gfm/unnamed-chunk-6-1.jpeg" style="display: block; margin: auto;" />
+<img src="README_files/figure-gfm/plot compile-1.jpeg" style="display: block; margin: auto;" />
 
 ### Considerations for Advanced Users
 
@@ -268,7 +268,7 @@ text(x = max(mmv.observations$time - 1),
      )
 ```
 
-<img src="README_files/figure-gfm/unnamed-chunk-8-1.jpeg" style="display: block; margin: auto;" />
+<img src="README_files/figure-gfm/plot speed observations-1.jpeg" style="display: block; margin: auto;" />
 
 ### Future Directions
 
