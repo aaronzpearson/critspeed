@@ -65,9 +65,11 @@ plot(max.mean.speed ~ duration,
 
 **`model.parameters()`**
 
-The critspeed package currently supports the following models: \* Two
-parameter \* Three parameter \* Five parameter \* Omni-domain
-velocity-duration
+The critspeed package currently supports the following models: 
+* Two parameter
+* Three parameter
+* Five parameter
+* Omni-domain velocity-duration
 
 The package will fit the model by optimizing for the minimum RSE value
 to the `data.frame` generated from the `critspeed()` function and
