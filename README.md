@@ -4,7 +4,7 @@
 Install the package by copying and running the following in your
 console:
 
-`devtools::install_github("critspeed")`
+`devtools::install_github("aaronzpearson/critspeed")`
 
 ## Working with the Package
 
