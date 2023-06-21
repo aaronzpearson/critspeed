@@ -116,14 +116,14 @@ The data can then be plotted using the `plot.model()` function.
 
 Users can visualize model fits using the `plot.model()` function and by indicating which model they want to fit. The example below fits the three parameter model to the `data.frame` that was generated from the `critspeed()` function.
 
-```{r, , fig.align="center"}
+```{r plot models, fig.align="center"}
 plot.model(mmv.sample, 
            model = "three.param")
 ```
 
 To return just the fitted model (Fitted Plot), users can define the `output` argument as `"fit"`.
 
-```{r, fig.align="center"}
+```{r plot fit, fig.align="center"}
 plot.model(mmv.sample, 
            model = "three.param",
            output = "fit")

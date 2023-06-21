@@ -65,11 +65,9 @@ plot(max.mean.speed ~ duration,
 
 **`model.parameters()`**
 
-The critspeed package currently supports the following models: 
-* Two parameter
-* Three parameter
-* Five parameter
-* Omni-domain velocity-duration
+The critspeed package currently supports the following models: \* Two
+parameter \* Three parameter \* Five parameter \* Omni-domain
+velocity-duration
 
 The package will fit the model by optimizing for the minimum RSE value
 to the `data.frame` generated from the `critspeed()` function and
@@ -143,7 +141,7 @@ plot.model(mmv.sample,
            model = "three.param")
 ```
 
-<img src="README_files/figure-gfm/unnamed-chunk-5-1.jpeg" style="display: block; margin: auto;" />
+<img src="README_files/figure-gfm/plot models-1.jpeg" style="display: block; margin: auto;" />
 
 To return just the fitted model (Fitted Plot), users can define the
 `output` argument as `"fit"`.
@@ -154,7 +152,7 @@ plot.model(mmv.sample,
            output = "fit")
 ```
 
-<img src="README_files/figure-gfm/unnamed-chunk-6-1.jpeg" style="display: block; margin: auto;" />
+<img src="README_files/figure-gfm/plot fit-1.jpeg" style="display: block; margin: auto;" />
 
 ------------------------------------------------------------------------
 
@@ -198,7 +196,7 @@ plot(max.mean.speed ~ duration, mmv.compile,
      ylab = "Max Mean Velocity (m/s)")
 ```
 
-<img src="README_files/figure-gfm/unnamed-chunk-8-1.jpeg" style="display: block; margin: auto;" />
+<img src="README_files/figure-gfm/unnamed-chunk-6-1.jpeg" style="display: block; margin: auto;" />
 
 ### Considerations for Advanced Users
 
@@ -270,7 +268,7 @@ text(x = max(mmv.observations$time - 1),
      )
 ```
 
-<img src="README_files/figure-gfm/unnamed-chunk-10-1.jpeg" style="display: block; margin: auto;" />
+<img src="README_files/figure-gfm/unnamed-chunk-8-1.jpeg" style="display: block; margin: auto;" />
 
 ### Future Directions
 
