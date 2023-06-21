@@ -69,5 +69,5 @@ method = "median")
 }
 }
 \seealso{
-\code{\link{model}}, \code{\link{compile}}, \code{\link{model.parameters}}, \code{\link{plot.model}}, \code{\link{fitted.model}}
+\code{\link{model}}, \code{\link{compile}}, \code{\link{speed.observations}}, \code{\link{model.parameters}}, \code{\link{plot.model}}, \code{\link{fitted.model}}
 }
