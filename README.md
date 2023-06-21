@@ -54,14 +54,18 @@ plot(max.mean.speed ~ duration, mmv.sample)
 
 **`model.parameters()`**
 
-The critspeed package currently supports the following models: \* Two
-parameter \* Three parameter \* Five parameter \* Omni-domain
-velocity-duration
+The critspeed package currently supports the following models:   
+* Two parameter
+* Three parameter
+* Five parameter
+* Omni-domain velocity-duration
 
 The package will fit the model by optimizing for the minimum RSE value
 to the `data.frame` generated from the `critspeed()` function and
-returns (when applicable): \* Critical speed \* Anaerobic capacity (D’)
-\* Max speed
+returns (when applicable): 
+* Critical speed
+* Anaerobic capacity (D’)
+* Max speed
 
 Users must note that the default minum duration for the two parameter
 model is set to 120 s. This was decided to improve model fit. Users can
@@ -250,8 +254,10 @@ balance) over the course of a session.
 
 ### Technical Notes
 
-This package is lightweight and currently has three dependencies: \*
-`data.table` \* `Rfast` \* `minpack.lm`
+This package is lightweight and currently has three dependencies: 
+* `data.table`
+* `Rfast`
+* `minpack.lm`
 
 Users should note that `data.table` and `Rfast` are written with a C++
 back-end and can require large amounts of system resources. These
