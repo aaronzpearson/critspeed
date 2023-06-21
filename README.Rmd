@@ -12,6 +12,13 @@ Install the package by copying and running the following in your console:
 
 ## Working with the Package
 
+### Load the Package
+
+```{r, eval = FALSE}
+library(critspeed)
+```
+
+
 ### Data Sets
 
 The package includes three data sets:
@@ -20,8 +27,24 @@ The package includes three data sets:
 * sessionMaxMeanSpeed: Maximal mean speed 
 * sessionMaxMedianSpeed: Maximal median speed
 
-```{r set-up, echo=FALSE}
-library(critspeed)
+```{r set-up, echo = FALSE, message = FALSE}
+suppressMessages(library(critspeed))
+suppressMessages(library(readr))
+
+session1 <- read_csv("C:/Users/My PC/Downloads/10Hz/436261/New 436261 - 10Hz - 2019-09-08PM.csv")[, 2:3]
+session2 <- read_csv("C:/Users/My PC/Downloads/10Hz/436261/New 436261 - 10Hz - 2019-08-31PM.csv")[, 2:3]
+session3 <- read_csv("C:/Users/My PC/Downloads/10Hz/436261/New 436261 - 10Hz - 2019-09-24PM.csv")[, 2:3]
+session4 <- read_csv("C:/Users/My PC/Downloads/10Hz/436261/New 436261 - 10Hz - 2019-08-16PM.csv")[, 2:3]
+
+colnames(session1) <- c("duration", "max.mean.speed")
+colnames(session2) <- c("duration", "max.mean.speed")
+colnames(session3) <- c("duration", "max.mean.speed")
+colnames(session4) <- c("duration", "max.mean.speed")
+
+session1$duration <- session1$duration/10
+session2$duration <- session2$duration/10
+session3$duration <- session3$duration/10
+session4$duration <- session4$duration/10
 ```
 
 ### Functions
@@ -32,7 +55,7 @@ The primary function of the critspeed package is `critspeed()` which takes a pla
 
 This function can take up to 1 minute, depending on the size of your data set.
 
-```{r critspeed}
+```{r critspeed, cache = TRUE}
 mmv.sample <- critspeed(player.speed = sessionRaw$speed, 
           dur = 600,
           sample.rate = 10,
@@ -43,11 +66,14 @@ head(mmv.sample)
 
 This data can then be visualized using a simple `plot()` function.
 
-```{r}
-plot(max.mean.speed ~ duration, mmv.sample)
+```{r, fig.align="center"}
+plot(max.mean.speed ~ duration, 
+     data = mmv.sample,
+     xlab = "Duration (s)",
+     ylab = "Max Mean Velocity (m/s)")
 ```
 
-
+--- 
 
 **`model.parameters()`**
 
@@ -68,6 +94,7 @@ Users must note that the default minum duration for the two parameter model is s
 model.parameters(mmv.sample)
 ```
 
+---
 
 **`fitted.model()`**
 
@@ -83,39 +110,49 @@ head(mmv.fitted)
 
 The data can then be plotted using the `plot.model()` function.
 
+---
+
 **`plot.model()`**
 
 Users can visualize model fits using the `plot.model()` function and by indicating which model they want to fit. The example below fits the three parameter model to the `data.frame` that was generated from the `critspeed()` function.
 
-```{r}
-plot.model(mmv.sample, model = "three.param")
+```{r, , fig.align="center"}
+plot.model(mmv.sample, 
+           model = "three.param")
 ```
 
 To return just the fitted model (Fitted Plot), users can define the `output` argument as `"fit"`.
 
-```{r}
+```{r, fig.align="center"}
 plot.model(mmv.sample, 
            model = "three.param",
            output = "fit")
 ```
 
+---
+
 **`compile()`**
 
 When working with multiple sessions, users may be interested in tracking changes in a player's critical speed. `compile()` allows users to input multiple vectors that contain the player's speed data and will return their greatest maximal mean or median speeds. The function will also index which session the values were pulled (`.id` variable) in accordance with the order of the vectors.
 
-The example below utilizes the `mmv.sample` data set that was generated earlier and the `sessionMaxMeanSpeed` that is included in the package.
+The example below utilize maximal mean velocity data from four games and practices in Men's soccer. The data are in the same format as the data sets returned by the `critspeed()` function.
 
 ```{r}
-mmv.compile <- compile(mmv.sample, sessionMaxMeanSpeed)
+mmv.compile <- compile(session1, 
+                       session2, 
+                       session3, 
+                       session4)
 
 head(mmv.compile)
 ```
 
 Users can visualize which observations were pulled from their respective data sets by plotting them as follows:
 
-```{r}
+```{r, fig.align="center"}
 plot(max.mean.speed ~ duration, mmv.compile,
-     col = mmv.compile$.id)
+     col = mmv.compile$.id,
+     xlab = "Duration (s)",
+     ylab = "Max Mean Velocity (m/s)")
 ```
 
 
@@ -143,12 +180,26 @@ mmv.observations <- speed.observations(sessionRaw$speed,
 head(mmv.observations)
 ```
 
-These data can be visualized using the `plot()` function:
+These data can be visualized using the `plot()` function. The maximal mean speed for the player at 5 s is 7.3 m/s and is visualized on the plot by the horizontal grey line.
 
-```{r}
+```{r, , fig.align="center"}
 plot(player.speed ~ time, 
      mmv.observations, 
-     "l")
+     "l",
+     xlab = "Session Duration (s)",
+     ylab = "Player Speed (m/s)")
+abline(h = mean(mmv.observations$player.speed),
+       col = "grey",
+       lwd = 2)
+text(x = max(mmv.observations$time - 1), 
+     y = mean(mmv.observations$player.speed) - 1.25,
+     label = paste0("Mean Velocity = ", 
+                    round(
+                      mean(mmv.observations$player.speed),
+                      2),
+                    " m/s"
+                    )
+     )
 ```
 
 
