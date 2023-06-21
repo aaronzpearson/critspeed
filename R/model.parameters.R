@@ -84,7 +84,7 @@ model.parameters <- function(data,
   
   colnames(data) <- c("duration", "max.mean.speed")
   
-  if(length(output) > 1) {output = "model.fit"}
+  if(length(output) > 1L) {output = "model.fit"}
   
   
   if(output == "model.fit") {
