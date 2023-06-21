@@ -1,0 +1,182 @@
+---
+output: 
+  github_document:
+    dev: jpeg
+---
+
+# critspeed: modelling critical speed from player tracking data in R
+
+Install the package by copying and running the following in your console:
+
+`devtools::install_github("critspeed")`
+
+## Working with the Package
+
+### Data Sets
+
+The package includes three data sets:
+
+* sessionRaw: Fabricated game data 
+* sessionMaxMeanSpeed: Maximal mean speed 
+* sessionMaxMedianSpeed: Maximal median speed
+
+```{r set-up, echo=FALSE}
+library(critspeed)
+```
+
+### Functions
+
+**`critspeed()`**
+
+The primary function of the critspeed package is `critspeed()` which takes a player's speed vector and returns either their max mean or median speed from 0.1 to a given duration (default = 600 s).
+
+This function can take up to 1 minute, depending on the size of your data set.
+
+```{r critspeed}
+mmv.sample <- critspeed(player.speed = sessionRaw$speed, 
+          dur = 600,
+          sample.rate = 10,
+          method = "mean")
+
+head(mmv.sample)
+```
+
+This data can then be visualized using a simple `plot()` function.
+
+```{r}
+plot(max.mean.speed ~ duration, mmv.sample)
+```
+
+
+
+**`model.parameters()`**
+
+The critspeed package currently supports the following models:
+* Two parameter
+* Three parameter
+* Five parameter
+* Omni-domain velocity-duration
+
+The package will fit the model by optimizing for the minimum RSE value to the `data.frame` generated from the `critspeed()` function and returns (when applicable):
+* Critical speed
+* Anaerobic capacity (D')
+* Max speed
+
+Users must note that the default minum duration for the two parameter model is set to 120 s. This was decided to improve model fit. Users can input their own minimum duration using the argument `cv.2`.
+
+```{r}
+model.parameters(mmv.sample)
+```
+
+
+**`fitted.model()`**
+
+`fitted.model()` returns both the fitted data and their residuals. This function takes on takes on the `data.frame` that was generated from the `critspeed()` function.
+
+The two parameter model will display `NA` for the first 120 s of data unless over-written by using the `cv.2` argument.
+
+```{r}
+mmv.fitted <- fitted.model(mmv.sample)
+
+head(mmv.fitted)
+```
+
+The data can then be plotted using the `plot.model()` function.
+
+**`plot.model()`**
+
+Users can visualize model fits using the `plot.model()` function and by indicating which model they want to fit. The example below fits the three parameter model to the `data.frame` that was generated from the `critspeed()` function.
+
+```{r}
+plot.model(mmv.sample, model = "three.param")
+```
+
+To return just the fitted model (Fitted Plot), users can define the `output` argument as `"fit"`.
+
+```{r}
+plot.model(mmv.sample, 
+           model = "three.param",
+           output = "fit")
+```
+
+**`compile()`**
+
+When working with multiple sessions, users may be interested in tracking changes in a player's critical speed. `compile()` allows users to input multiple vectors that contain the player's speed data and will return their greatest maximal mean or median speeds. The function will also index which session the values were pulled (`.id` variable) in accordance with the order of the vectors.
+
+The example below utilizes the `mmv.sample` data set that was generated earlier and the `sessionMaxMeanSpeed` that is included in the package.
+
+```{r}
+mmv.compile <- compile(mmv.sample, sessionMaxMeanSpeed)
+
+head(mmv.compile)
+```
+
+Users can visualize which observations were pulled from their respective data sets by plotting them as follows:
+
+```{r}
+plot(max.mean.speed ~ duration, mmv.compile,
+     col = mmv.compile$.id)
+```
+
+
+
+### Considerations for Advanced Users
+
+The following function requires some proficiency in R because of how the arguments are set-up. If the functions were written to take-on the `data.frame` that was generated from the `critspeed()` function, the user's options would be limited.
+
+**`speed.observations()`**
+
+The `speed.observations()` function returns a data set that contains the speed values from the session from which the maximal mean or maximal median values were pulled for a given duration. The function's primary arguments are `player.speed` and `...` which take on one or more vectors that contain a player's speed. As with `compile()`, the function will return the index which corresponds to the vector that contains the observations. 
+
+Users must note that the data are vectors from the tracking data and not the maximal mean or maximal median speed values that are generated from the `critspeed()` function.
+
+The example below utilizes the `sessionRaw` data but can take on multiple vectors. The output from the example below will correspond to the speed observations that make up the greatest maximal mean velocity for 5 s.
+
+Please note that although the `method` argument can take-on `"median"`, it is not currently implemented. 
+
+```{r}
+mmv.observations <- speed.observations(sessionRaw$speed, 
+                   dur = 5, 
+                   sample.rate = 10,
+                   method = "mean")
+
+head(mmv.observations)
+```
+
+These data can be visualized using the `plot()` function:
+
+```{r}
+plot(player.speed ~ time, 
+     mmv.observations, 
+     "l")
+```
+
+
+### Future Directions
+
+The package will soon support the following models:
+
+* Extended omni-domain velocity-duration
+* Power law
+* Exponential model
+* Richard's logistic 5 parameter    
+* Generalized logistic 4 parameter    
+* Logistic 3 parameter    
+* Quintic polynomial    
+* Bi-exponential with 5 parameters    
+* Gompertz' logistic 4 parameter    
+* Decaying exponential 3 parameter    
+
+and will allow users to model and plot a player's anaerobic balance (D' balance) over the course of a session. 
+
+
+### Technical Notes
+
+This package is lightweight and currently has three dependencies: 
+* `data.table`
+* `Rfast`
+* `minpack.lm`
+
+Users should note that `data.table` and `Rfast` are written with a C++ back-end and can require large amounts of system resources. These packages were chosen because they can process the data quickly and efficiently. 
+
+Please email Aaron at aaron@midsprint.io for technical issues or suggestions. 
